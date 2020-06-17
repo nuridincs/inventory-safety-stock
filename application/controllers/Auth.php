@@ -7,7 +7,6 @@ class Auth extends CI_Controller{
   public function __construct()
   {
     parent::__construct();
-    //Codeigniter : Write Less Do More
   }
 
   function index()
@@ -18,5 +17,10 @@ class Auth extends CI_Controller{
   function login()
   {
     redirect('dashboard1');
+  }
+
+  function logout()
+  {
+    redirect('auth');
   }
 }

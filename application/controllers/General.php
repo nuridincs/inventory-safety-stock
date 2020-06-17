@@ -20,6 +20,7 @@ class General extends CI_Controller{
   {
     $data['content'] = 'content/barang/list';
     $data['barang'] = $this->M_general->getData('app_barang');
+    $data['cabang'] = $this->M_general->getData('app_cabang');
     $this->load->view('template', $data);
   }
 
