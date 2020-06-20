@@ -60,6 +60,10 @@ class M_general extends CI_Model {
           $this->db->insert('app_barang', array('kode_jenis_barang' => $data['kode_jenis_barang_baru'], 'minimum_stok' => 0));
           $this->db->insert($type, $dataBarang);
         }
+      } elseif ($type == 'app_barang_keluar') {
+        $this->db->insert($type, $data);
+      } elseif ($type == 'app_barang') {
+        $this->db->insert($type, $data);
       }
     } elseif ($action == 'update') {
       if ($type == 'app_barang_masuk') {
@@ -76,9 +80,23 @@ class M_general extends CI_Model {
           'jumlah_barang' => $resultBarang['jumlah_barang'] - $data['jumlah_barang'],
         ];
 
+        $barangKeluar = [
+          'kode_jenis_barang' => $data['id'],
+          'jumlah_barang_keluar' => $data['jumlah_barang'],
+          'tanggal_keluar' => $data['tanggal_keluar'],
+        ];
+
+        $this->execute('save', 'app_barang_keluar', $barangKeluar);
+
         $this->db->where('kode_jenis_barang', $data['id']);
         $this->db->update('app_barang_masuk', $formData);
+      } elseif ($type == 'master_barang') {
+        $this->db->where('kode_jenis_barang', $data['id']);
+        $this->db->update('app_barang', array('minimum_stok' => $data['minimum_stok']));
       }
+    } elseif ($action == 'delete') {
+      $this->db->where($data['idName'], $data['id']);
+      $this->db->delete($type);
     }
   }
 }

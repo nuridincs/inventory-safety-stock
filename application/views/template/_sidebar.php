@@ -22,10 +22,8 @@
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-				<!-- Add icons to the links using the .nav-icon class
-						 with font-awesome or any other icon font library -->
 				<li class="nav-item has-treeview menu-open">
-					<a href="<?php echo base_url('/general') ?>" class="nav-link active">
+					<a href="<?php echo base_url('/general') ?>" class="nav-link">
 						<i class="nav-icon fa fa-dashboard"></i>
 						<p>
 							Dashboard
@@ -36,19 +34,43 @@
 					<a href="<?php echo base_url('/general/listBarang') ?>" class="nav-link">
 						<i class="nav-icon fa fa-th"></i>
 						<p>
-							Data Barang
+							Kelola Master Barang
 						</p>
 					</a>
 				</li>
 				<li class="nav-item">
-					<a href="<?php echo base_url('/general/listBarang') ?>" class="nav-link">
+					<a href="<?php echo base_url('/general/listBarangMasuk') ?>" class="nav-link">
+						<i class="nav-icon fa fa-th"></i>
+						<p>
+							Kelola Barang Masuk
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?php echo base_url('/general/listBarangKeluar') ?>" class="nav-link">
+						<i class="nav-icon fa fa-th"></i>
+						<p>
+							Kelola Barang Keluar
+						</p>
+					</a>
+				</li>
+				<li class="nav-item">
+					<a href="<?php echo base_url('/general/listUser') ?>" class="nav-link">
 						<i class="nav-icon fa fa-th"></i>
 						<p>
 							Kelola Users
 						</p>
 					</a>
 				</li>
-				<li class="nav-item has-treeview">
+				<li class="nav-item">
+					<a href="<?php echo base_url('/general/laporan') ?>" class="nav-link">
+						<i class="nav-icon fa fa-th"></i>
+						<p>
+							Laporan
+						</p>
+					</a>
+				</li>
+				<!-- <li class="nav-item has-treeview">
 					<a href="#" class="nav-link">
 						<i class="nav-icon fa fa-edit"></i>
 						<p>
@@ -99,7 +121,7 @@
 							</a>
 						</li>
 					</ul>
-				</li>
+				</li> -->
 				<li class="nav-item">
 					<a href="<?php echo base_url('/Auth/logout') ?>" class="nav-link">
 						<i class="nav-icon fa fa-th"></i>

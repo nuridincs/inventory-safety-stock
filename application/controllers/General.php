@@ -18,6 +18,13 @@ class General extends CI_Controller{
 
   function listBarang()
   {
+    $data['content'] = 'content/list_master_barang';
+    $data['barang'] = $this->M_general->getData('app_barang');
+    $this->load->view('template', $data);
+  }
+
+  function listBarangMasuk()
+  {
     $data['content'] = 'content/barang_masuk/list';
     $data['barang'] = $this->M_general->getDataBarang('barang_masuk', 'app_barang', 'app_barang_masuk');
     $data['cabang'] = $this->M_general->getData('app_cabang');
@@ -54,6 +61,32 @@ class General extends CI_Controller{
   {
     $request = $this->input->post('data');
     $this->M_general->execute('update', 'siapkan_barang', $request);
+  }
+
+  function getDtl()
+  {
+    $request = $this->input->post('data');
+    $result = $this->M_general->getDataByID($request['table'], $request['idName'], $request['id']);
+
+    echo json_encode($result);
+  }
+
+  function AddBarang()
+  {
+    $request = $this->input->post('data');
+    $this->M_general->execute('save', 'app_barang', $request);
+  }
+
+  function UpdateBarang()
+  {
+    $request = $this->input->post('data');
+    $this->M_general->execute('update', 'master_barang', $request);
+  }
+
+  function DeleteBarang()
+  {
+    $request = $this->input->post('data');
+    $this->M_general->execute('delete', 'app_barang', $request);
   }
 
 }

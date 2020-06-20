@@ -40,7 +40,7 @@
 
                     $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>';
                     if ($data->status_barang == 1) {
-                      $status_barang = '<span class="badge badge-success">Tersedia</span>';
+                      $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
                     }
 
                     if ($data->status_barang == 2) {
@@ -49,6 +49,10 @@
 
                     if ($data->status_barang == 3) {
                       $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
+                    }
+
+                    if ($data->minimum_stok >= $data->jumlah_barang) {
+                      $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>';
                     }
                 ?>
                 <tr>
@@ -108,7 +112,7 @@
               </div>
               <div class="form-group">
                 <label for="jumlah">Jumlah Barang</label>
-                <input type="number" class="form-control" name="jumlah_barang" placeholder="Masukan Jumlah Barang" i_siapkan_barang>
+                <input type="number" class="form-control" name="jumlah_barang" placeholder="Masukan Jumlah Barang" id="jumlah_barang">
               </div>
               <div class="form-group">
                 <label for="keterangan">Keterangan</label>
@@ -165,6 +169,11 @@
 
           <!-- Modal body -->
           <div class="modal-body">
+            <!-- Date range -->
+            <div class="form-group">
+              <label>Tanggal Keluar:</label>
+              <input data-date-format="yyyy-mm-dd" class="form-control" name="tanggal_keluar" id="tanggal_keluar">
+            </div>
             <div class="form-group">
               <label for="jumlah">Jumlah Barang</label>
               <input type="number" class="form-control" placeholder="Masukan Jumlah Barang" required="required" id="jumlah_siapkan_barang">
@@ -186,6 +195,12 @@
 
 <script>
   $(function() {
+    $('#tanggal_keluar').datepicker("setDate", new Date());
+
+    $('#tanggal_keluar').on('changeDate', function(ev){
+        $(this).datepicker('hide');
+    });
+
     $('#kode_jenis_barang_baru').hide();
 
     $('#jenis_barang').change(function(){
@@ -200,6 +215,13 @@
 
     $('#submitpp').click(function() {
       const formData = $('#form_data').serialize();
+      const jumlah_barang = $('#jumlah_barang').val();
+
+      if (jumlah_barang === '') {
+        alert('Jumlah Barang Wajib diisi');
+
+        return;
+      }
 
       $.post("submitRequestBarang", { data: formData }, function( data ) {
         window.location.reload();
@@ -217,10 +239,19 @@
     $('#submitsiapkanbarnag').click(function() {
       const id = $("#idselected").val();
       const jumlah_siapkan_barang = $('#jumlah_siapkan_barang').val();
+      const tanggal_keluar = $('#tanggal_keluar').val();
+
+      if (jumlah_siapkan_barang === '') {
+        alert('Jumlah Barang Wajib diisi');
+
+        return;
+      }
+
       const formData = {
         data: {
           id: id,
-          jumlah_barang: jumlah_siapkan_barang
+          jumlah_barang: jumlah_siapkan_barang,
+          tanggal_keluar: tanggal_keluar,
         }
       }
 
@@ -234,4 +265,21 @@
   {
     $('#idselected').val(id);
   }
+
+  // function getDtl(id)
+  // {
+  //   const formData = {
+  //     data: {
+  //       id: id,
+  //       table: 'app_barang',
+  //       idName: 'kode_jenis_barang',
+  //     }
+  //   }
+
+  //   $.post("getDtl", formData, function( data ) {
+  //     const result = JSON.parse(data);
+  //     $('#update_kode_jenis_barang').val(result.kode_jenis_barang);
+  //     $('#update_minimum_stok').val(result.minimum_stok);
+  //   });
+  // }
 </script>
