@@ -3,7 +3,7 @@
 <!-- Ionicons -->
 <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- DataTables -->
-  <link rel="stylesheet" href="<?php echo base_url('assets');?>/plugins/datatables/dataTables.bootstrap4.min.css">
+  <!-- <link rel="stylesheet" href="<?php //echo base_url('assets');?>/plugins/datatables/dataTables.bootstrap4.min.css"> -->
 <!-- Theme style -->
 <link href="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/css/adminlte.min.css" rel="stylesheet">
 <!-- iCheck -->

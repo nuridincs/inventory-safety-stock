@@ -7,11 +7,11 @@
 <!-- Bootstrap 4 -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- DataTables -->
-<script src="<?php echo base_url('assets');?>/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?php echo base_url('assets');?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?php echo base_url('assets');?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<!-- <script src="<?php //echo base_url('assets');?>/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="<?php //echo base_url('assets');?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="<?php //echo base_url('assets');?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script> -->
 <!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script> -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/sparkline/jquery.sparkline.min.js"></script>
