@@ -16,7 +16,7 @@ class Auth extends CI_Controller{
 
   function login()
   {
-    redirect('dashboard1');
+    redirect('general');
   }
 
   function logout()
