@@ -21,8 +21,8 @@
       <div class="row">
         <div class="col-12">
           <div class="card">
-            <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover">
+            <div class="card-body table-responsive p-0">
+              <table id="example2" class="table table-hover text-nowrap">
                 <thead>
                 <tr>
                   <th>Nomor</th>

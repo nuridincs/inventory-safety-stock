@@ -20,10 +20,10 @@
     <section class="content">
       <div class="row">
         <div class="col-12">
+          <button class="btn btn-dark btn-sm mb-3" data-toggle="modal" data-target="#modalTambah">Tambah</button>
           <div class="card">
-            <div class="card-body">
-              <button class="btn btn-dark btn-sm mb-3" data-toggle="modal" data-target="#modalTambah">Tambah</button>
-              <table id="example2" class="table table-bordered table-hover">
+            <div class="card-body table-responsive p-0">
+              <table id="example2" class="table table-hover text-nowrap">
                 <thead>
                 <tr>
                   <th>Nomor</th>
@@ -191,10 +191,11 @@
         data: {
           kode_jenis_barang: kode_jenis_barang,
           minimum_stok: minimum_stok,
-        }
+        },
+        table: 'app_barang',
       }
 
-      $.post("AddBarang", formData, function( data ) {
+      $.post("ActionAdd", formData, function( data ) {
         window.location.reload();
       });
     })
@@ -205,12 +206,14 @@
 
       const formData = {
         data: {
-          id: id,
-          minimum_stok: update_minimum_stok
-        }
+          minimum_stok: update_minimum_stok,
+        },
+        id: id,
+        table: 'app_barang',
+        id_name: 'kode_jenis_barang',
       }
 
-      $.post("UpdateBarang", formData, function( data ) {
+      $.post("ActionUpdate", formData, function( data ) {
         window.location.reload();
       });
     })
@@ -221,12 +224,12 @@
       const formData = {
         data: {
           id: id,
-          table: 'app_barang',
           idName: 'kode_jenis_barang',
-        }
+        },
+        table: 'app_barang',
       }
 
-      $.post("DeleteBarang", formData, function( data ) {
+      $.post("ActionDelete", formData, function( data ) {
         window.location.reload();
       });
     })
@@ -251,21 +254,6 @@
   {
     $('#idselected').val(id);
   }
-
-  // function deleteBarang(id)
-  // {
-    // const formData = {
-    //   data: {
-    //     id: id,
-    //     table: 'app_barang',
-    //     idName: 'kode_jenis_barang',
-    //   }
-    // }
-
-    // $.post("DeleteBarang", formData, function( data ) {
-    //   window.location.reload();
-    // });
-  // }
 
   function getDtlBarang(id)
   {

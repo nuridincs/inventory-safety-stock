@@ -26,8 +26,30 @@ class General extends CI_Controller{
   function listBarangMasuk()
   {
     $data['content'] = 'content/barang_masuk/list';
-    $data['barang'] = $this->M_general->getDataBarang('barang_masuk', 'app_barang', 'app_barang_masuk');
+    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang', 'app_barang_masuk');
     $data['cabang'] = $this->M_general->getData('app_cabang');
+    $this->load->view('template', $data);
+  }
+
+  function listBarangKeluar()
+  {
+    $data['content'] = 'content/list_barang_keluar';
+    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $this->load->view('template', $data);
+  }
+
+  function laporan()
+  {
+    $data['content'] = 'content/laporan';
+    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $this->load->view('template', $data);
+  }
+
+  function listUser()
+  {
+    $data['content'] = 'content/list_user';
+    $data['user'] = $this->M_general->getJoinData('id_users_role', 'app_users', 'app_role');
+    $data['role'] = $this->M_general->getData('app_role');
     $this->load->view('template', $data);
   }
 
@@ -71,22 +93,52 @@ class General extends CI_Controller{
     echo json_encode($result);
   }
 
-  function AddBarang()
+  function generateData($request)
   {
-    $request = $this->input->post('data');
-    $this->M_general->execute('save', 'app_barang', $request);
+    $data = [
+      'nama' => $request['nama'],
+      'email' => $request['email'],
+      'password' => md5($request['password']),
+      'id_users_role' => $request['id_users_role'],
+    ];
+
+    return $data;
   }
 
-  function UpdateBarang()
+  function ActionAdd()
   {
+    $role = $this->input->post('role');
     $request = $this->input->post('data');
-    $this->M_general->execute('update', 'master_barang', $request);
+    $table = $this->input->post('table');
+
+    if (!empty($role) == 'users') {
+      $request = $this->generateData($request);
+    }
+
+    $this->M_general->execute('save', $table, $request);
   }
 
-  function DeleteBarang()
+  function ActionUpdate()
   {
     $request = $this->input->post('data');
-    $this->M_general->execute('delete', 'app_barang', $request);
+    $table = $this->input->post('table');
+    $id_name = $this->input->post('id_name');
+    $id = $this->input->post('id');
+
+    $data = [
+      'id' => $id,
+      'request' => $request,
+      'table' => $table,
+      'id_name' => $id_name,
+    ];
+    $this->M_general->execute('update', $id_name, $data);
+  }
+
+  function ActionDelete()
+  {
+    $request = $this->input->post('data');
+    $table = $this->input->post('table');
+    $this->M_general->execute('delete', $table, $request);
   }
 
 }

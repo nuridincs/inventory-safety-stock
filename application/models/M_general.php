@@ -18,14 +18,12 @@ class M_general extends CI_Model {
     return $query->result_array()[0];
   }
 
-  public function getDataBarang($type, $table1, $table2)
+  public function getJoinData($uniqid, $table1, $table2)
   {
-    if ($type === 'barang_masuk') {
-      $query = $this->db->select('*')
-              ->from($table1)
-              ->join($table2, $table2.'.kode_jenis_barang='.$table1.'.kode_jenis_barang')
-              ->get();
-    }
+    $query = $this->db->select('*')
+            ->from($table1)
+            ->join($table2, $table2.'.'.$uniqid.'='.$table1.'.'.$uniqid)
+            ->get();
 
     return $query->result();
   }
@@ -64,6 +62,8 @@ class M_general extends CI_Model {
         $this->db->insert($type, $data);
       } elseif ($type == 'app_barang') {
         $this->db->insert($type, $data);
+      } else {
+        $this->db->insert($type, $data);
       }
     } elseif ($action == 'update') {
       if ($type == 'app_barang_masuk') {
@@ -93,6 +93,9 @@ class M_general extends CI_Model {
       } elseif ($type == 'master_barang') {
         $this->db->where('kode_jenis_barang', $data['id']);
         $this->db->update('app_barang', array('minimum_stok' => $data['minimum_stok']));
+      } else {
+        $this->db->where($type, $data['id']);
+        $this->db->update($data['table'], $data['request']);
       }
     } elseif ($action == 'delete') {
       $this->db->where($data['idName'], $data['id']);

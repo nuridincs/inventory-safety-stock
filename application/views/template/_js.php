@@ -1,8 +1,8 @@
 <!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
-  $.widget.bridge('uibutton', $.ui.button)
+  // $.widget.bridge('uibutton', $.ui.button)
 </script>
 <!-- Bootstrap 4 -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -21,7 +21,8 @@
 <!-- jQuery Knob Chart -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+<script src="<?php echo base_url('assets');?>/template/js/moment.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script> -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -34,6 +35,6 @@
 <!-- AdminLTE App -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/js/pages/dashboard.js"></script>
+<!-- <script src="<?php //echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/js/pages/dashboard.js"></script> -->
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/js/demo.js"></script>
