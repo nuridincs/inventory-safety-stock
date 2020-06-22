@@ -15,7 +15,7 @@
 				<img src="<?php echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
 			</div>
 			<div class="info">
-				<a href="#" class="d-block">Alexander Pierce</a>
+				<a href="#" class="d-block"><?php echo $this->session->userdata('nama'); ?></a>
 			</div>
 		</div>
 
