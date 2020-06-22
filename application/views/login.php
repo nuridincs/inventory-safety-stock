@@ -38,11 +38,9 @@
         <p class="title"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</p>
         <div class="form-group has-feedback">
           <input type="email" name="email" class="form-control" placeholder="Email" required>
-          <!-- <span class="fa fa-envelope form-control-feedback"></span> -->
         </div>
         <div class="form-group has-feedback">
           <input type="password" name="password" class="form-control" placeholder="Password" required>
-          <!-- <span class="fa fa-lock form-control-feedback"></span> -->
         </div>
         <div class="row">
           <!-- /.col -->

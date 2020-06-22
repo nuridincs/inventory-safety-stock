@@ -32,7 +32,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?php echo base_url('/general/listBarang') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-folder-open"></i>
 						<p>
 							Kelola Master Barang
 						</p>
@@ -40,7 +40,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?php echo base_url('/general/listBarangMasuk') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-folder-open"></i>
 						<p>
 							Kelola Barang Masuk
 						</p>
@@ -48,7 +48,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?php echo base_url('/general/listBarangKeluar') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-folder-open"></i>
 						<p>
 							Kelola Barang Keluar
 						</p>
@@ -56,7 +56,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?php echo base_url('/general/listUser') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-folder-open"></i>
 						<p>
 							Kelola Users
 						</p>
@@ -64,7 +64,7 @@
 				</li>
 				<li class="nav-item">
 					<a href="<?php echo base_url('/general/laporan') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-file"></i>
 						<p>
 							Laporan
 						</p>
@@ -124,7 +124,7 @@
 				</li> -->
 				<li class="nav-item">
 					<a href="<?php echo base_url('/Auth/logout') ?>" class="nav-link">
-						<i class="nav-icon fa fa-th"></i>
+						<i class="nav-icon fa fa-sign-out"></i>
 						<p>
 							Logout
 						</p>
