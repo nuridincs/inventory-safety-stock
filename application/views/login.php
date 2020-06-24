@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Log in System</title>
+  <title>Log in System PT. RUBBERMAN</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,12 +21,12 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Admin</b>System</a>
+    <a href="#"><b>Login</b>System</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <h3 class="login-box-msg">PT. RUBBERMAN</h3>
 
       <?php if($this->session->flashdata('msg')){ ?>
         <div class="alert alert-danger alert-dismissible">
