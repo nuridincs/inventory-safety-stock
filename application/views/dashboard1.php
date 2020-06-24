@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PT. DONY | Dashboard</title>
+	<title>PT. RUBBERMAN | Dashboard</title>
 	<!-- meta -->
 	<?php require_once 'template/_meta.php'; ?>
 

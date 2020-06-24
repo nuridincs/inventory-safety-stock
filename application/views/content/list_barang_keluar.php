@@ -31,6 +31,7 @@
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
                   <th>Jumlah Barang Keluar</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,7 +45,10 @@
                   <td><?= $data->kode_jenis_barang ?></td>
                   <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)); ?></td>
                   <td><?= $data->tanggal_keluar ?></td>
-                  <td><?= $data->jumlah_barang_keluar ?></td>
+                  <td class="text-center"><?= $data->jumlah_barang_keluar ?></td>
+                  <td>
+                    <button class="btn btn-danger btn-sm">Cetak Data</button>
+                  </td>
                 </tr>
                 <?php } ?>
               </table>

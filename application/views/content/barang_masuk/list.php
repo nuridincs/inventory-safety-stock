@@ -60,7 +60,13 @@
                   <td><?= $data->kode_jenis_barang ?></td>
                   <td><?= $data->jumlah_barang ?></td>
                   <td><?= $status_barang ?></td>
-                  <td><button class="btn btn-primary btn-sm">Edit</button> | <button class="btn btn-danger btn-sm">Delete</button></td>
+                  <td>
+                    <?php if ($data->minimum_stok <= $data->jumlah_barang) { ?>
+                      <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalUpdatePP" onClick="getDtlBarang('<?= $data->id ?>')">Edit</button>
+                      |
+                    <?php } ?>
+                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDelete" onClick="getID('<?= $data->id ?>')">Delete</button>
+                  </td>
                 </tr>
                 <?php } ?>
               </table>
@@ -131,6 +137,34 @@
       </div>
     </div>
 
+    <!-- Modal Edit Permintaan -->
+    <div class="modal" id="modalUpdatePP">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Edit Permintaan</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form id="form_data_update_barang_masuk">
+              <div id="content"></div>
+            </form>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="updatepp">Submit</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
     <!-- Modal Verifikasi Barang -->
     <div class="modal" id="modalVerifikasiBarang">
       <div class="modal-dialog">
@@ -189,6 +223,31 @@
       </div>
     </div>
 
+    <!-- Modal Delete Barang Masuk -->
+    <div class="modal" id="modalDelete">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Hapus Barang Masuk</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            <h3>Apakah Anda yakin ingin menghapus data ini ?</h3>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" id="actiondelete">Submit</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </body>
 </html>
@@ -224,6 +283,46 @@
       }
 
       $.post("submitRequestBarang", { data: formData }, function( data ) {
+        window.location.reload();
+      });
+    })
+
+    $('#updatepp').click(function() {
+      const id = $("#idselected").val();
+      const kode_jenis_barang = $('#update_kode_jenis_barang_lama').val();
+      const cabang = $('#update_cabang').val();
+      const jumlah_barang = $('#update_jumlah_barang').val();
+      const keterangan = $('#update_keterangan').val();
+
+      const data = {
+        data: {
+          kode_jenis_barang: kode_jenis_barang,
+          id_cabang: cabang,
+          jumlah_barang: jumlah_barang,
+          keterangan: keterangan,
+        },
+        id: id,
+        table: 'app_barang_masuk',
+        id_name: 'id',
+      }
+
+      $.post("ActionUpdate", data, function( data ) {
+        window.location.reload();
+      });
+    })
+
+    $('#actiondelete').click(function() {
+      const id = $("#idselected").val();
+
+      const formData = {
+        data: {
+          id: id,
+          idName: 'id',
+        },
+        table: 'app_barang_masuk',
+      }
+
+      $.post("ActionDelete", formData, function( data ) {
         window.location.reload();
       });
     })
@@ -266,20 +365,20 @@
     $('#idselected').val(id);
   }
 
-  // function getDtl(id)
-  // {
-  //   const formData = {
-  //     data: {
-  //       id: id,
-  //       table: 'app_barang',
-  //       idName: 'kode_jenis_barang',
-  //     }
-  //   }
+  function getDtlBarang(id)
+  {
+    $("#idselected").val(id);
+    const formData = {
+      data: {
+        id: id,
+        table: 'app_barang_masuk',
+        idName: 'id',
+      }
+    }
 
-  //   $.post("getDtl", formData, function( data ) {
-  //     const result = JSON.parse(data);
-  //     $('#update_kode_jenis_barang').val(result.kode_jenis_barang);
-  //     $('#update_minimum_stok').val(result.minimum_stok);
-  //   });
-  // }
+    $.post("getDtlBarangMasuk", formData, function( data ) {
+      const result = data;
+      $('#content').html(result);
+    });
+  }
 </script>

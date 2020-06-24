@@ -93,6 +93,52 @@ class General extends CI_Controller{
     echo json_encode($result);
   }
 
+  function getDtlBarangMasuk()
+  {
+    $request = $this->input->post('data');
+    $result = $this->M_general->getDataByID($request['table'], $request['idName'], $request['id']);
+    $getMasterBarang = $this->M_general->getData('app_barang');
+    $getCabang = $this->M_general->getData('app_cabang');
+
+    $_view = '<div class="form-group">';
+      $_view .= '<label for="kode_jenis_barang">Kode Jenis Barang</label>';
+      $_view .= '<select name="update_kode_jenis_barang_lama" class="form-control" id="update_kode_jenis_barang_lama">';
+        foreach($getMasterBarang as $barang) {
+          if ($result['kode_jenis_barang'] == $barang->kode_jenis_barang) {
+            $_view .= '<option value="'.$barang->kode_jenis_barang.'" selected>'.$barang->kode_jenis_barang.'</option>';
+          } else {
+            $_view .= '<option value="'.$barang->kode_jenis_barang.'">'.$barang->kode_jenis_barang.'</option>';
+          }
+        }
+      $_view .= '</select>';
+    $_view .= '</div>';
+
+    $_view .= '<div class="form-group">';
+      $_view .= '<label for="cabang">Cabang</label>';
+      $_view .= '<select name="update_cabang" class="form-control" id="update_cabang">';
+        foreach($getCabang as $cabang) {
+          if ($result['id_cabang'] == $cabang->id) {
+            $_view .= '<option value="'.$cabang->id.'" selected>'.$cabang->nama_cabang.'</option>';
+          } else {
+            $_view .= '<option value="'.$cabang->id.'">'.$cabang->nama_cabang.'</option>';
+          }
+        }
+      $_view .= '</select>';
+    $_view .= '</div>';
+
+    $_view .= '<div class="form-group">';
+      $_view .= '<label for="jumlah">Jumlah Barang</label>';
+      $_view .= '<input type="number" value="'.$result['jumlah_barang'].'" class="form-control" name="update_jumlah_barang" placeholder="Masukan Jumlah Barang" id="update_jumlah_barang">';
+    $_view .= '</div>';
+
+    $_view .= '<div class="form-group">';
+      $_view .= '<label for="keterangan">Keterangan</label>';
+      $_view .= '<textarea class="form-control" name="update_keterangan" id="update_keterangan">'.$result['keterangan'].'</textarea>';
+    $_view .= '</div>';
+
+    echo $_view;
+  }
+
   function generateData($request)
   {
     $data = [

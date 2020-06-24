@@ -152,7 +152,7 @@
       </div>
     </div>
 
-    <!-- Modal Delete Barang -->
+    <!-- Modal Delete User -->
     <div class="modal" id="modalDelete">
       <div class="modal-dialog">
         <div class="modal-content">
