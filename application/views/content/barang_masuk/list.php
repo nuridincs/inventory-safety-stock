@@ -40,7 +40,7 @@
 
                     $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>';
                     if ($data->status_barang == 1) {
-                      $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
+                      $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\', \''.$data->minimum_stok.'\', \''.$data->jumlah_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
                     }
 
                     if ($data->status_barang == 2) {
@@ -48,7 +48,7 @@
                     }
 
                     if ($data->status_barang == 3) {
-                      $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
+                      $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\', \''.$data->minimum_stok.'\', \''.$data->jumlah_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
                     }
 
                     if ($data->minimum_stok >= $data->jumlah_barang) {
@@ -76,7 +76,9 @@
       </div>
     </section>
 
-    <input type="hidden" name="idselected" id="idselected" class=form-control"">
+    <input type="hidden" name="idselected" id="idselected" class="form-control">
+    <input type="hidden" name="minimum_stok" id="minimum_stok" class="form-control">
+    <input type="hidden" name="jumlah_stok_barang" id="jumlah_stok_barang" class="form-control">
 
     <!-- Modal Buat Permintaan -->
     <div class="modal" id="modalPP">
@@ -101,7 +103,7 @@
               </div>
               <div class="form-group">
                 <label for="kode_jenis_barang">Kode Jenis Barang</label>
-                <input type="text" class="form-control" placeholder="Masukan Jumlah Barang" name="kode_jenis_barang_baru" id="kode_jenis_barang_baru">
+                <input type="text" class="form-control" placeholder="Masukan Kode Jenis Barang" name="kode_jenis_barang_baru" id="kode_jenis_barang_baru">
                 <select name="kode_jenis_barang_lama" class="form-control" id="kode_jenis_barang_lama">
                   <?php foreach($barang as $barang) { ?>
                     <option value="<?= $barang->kode_jenis_barang; ?>"><?= $barang->kode_jenis_barang; ?></option>
@@ -337,8 +339,31 @@
 
     $('#submitsiapkanbarnag').click(function() {
       const id = $("#idselected").val();
+      const minimum_stok = $("#minimum_stok").val();
       const jumlah_siapkan_barang = $('#jumlah_siapkan_barang').val();
+      const jumlah_stok_barang = $('#jumlah_stok_barang').val();
       const tanggal_keluar = $('#tanggal_keluar').val();
+      const calculate_stok = parseInt(jumlah_stok_barang) - parseInt(minimum_stok);
+
+      console.log('minimum_stok', minimum_stok);
+      console.log('calculate_stok', calculate_stok);
+      console.log('jumlah_siapkan_barang', jumlah_siapkan_barang);
+      console.log('jumlah_stok_barang', jumlah_stok_barang);
+
+      // if (jumlah_stok_barang <= minimum_stok) {
+      //   alert('1 Jumlah Stok Barang yang Anda inginkan dalam batas limit, silahkan lakukan PO');
+      //   return
+      // }
+
+      // if (jumlah_stok_barang <= jumlah_siapkan_barang) {
+      //   alert('2 Jumlah Stok Barang yang Anda inginkan dalam batas limit, silahkan lakukan PO');
+      //   return
+      // }
+
+      if (calculate_stok < jumlah_siapkan_barang) {
+        alert('Jumlah Stok Barang yang Anda inginkan dalam batas limit, silahkan lakukan PO');
+        return
+      }
 
       if (jumlah_siapkan_barang === '') {
         alert('Jumlah Barang Wajib diisi');
@@ -360,9 +385,11 @@
     })
   });
 
-  function getID(id)
+  function getID(id, minimum_stok = 0, jumlah_barang = 0)
   {
     $('#idselected').val(id);
+    $('#minimum_stok').val(minimum_stok);
+    $('#jumlah_stok_barang').val(jumlah_barang);
   }
 
   function getDtlBarang(id)

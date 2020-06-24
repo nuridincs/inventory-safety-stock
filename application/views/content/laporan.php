@@ -29,7 +29,7 @@
                 <tr>
                   <th>Nomor</th>
                   <th>Kode Jenis Barang</th>
-                  <th>Stok Barang</th>
+                  <!-- <th>Stok Barang</th> -->
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
                   <th>Jumlah Barang Keluar</th>
@@ -45,11 +45,11 @@
                 <tr>
                   <td><?= $no ?></td>
                   <td><?= $data->kode_jenis_barang ?></td>
-                  <td><?= $data->jumlah_barang ?></td>
+                  <!-- <td><?//= $data->jumlah_barang ?></td> -->
                   <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)); ?></td>
                   <td><?= $data->tanggal_keluar ?></td>
                   <td><?= $data->jumlah_barang_keluar ?></td>
-                  <td><span class="badge badge-danger"><?= $data->jumlah_barang - $data->jumlah_barang_keluar ?></span></td>
+                  <td><span class="badge badge-danger"><?= $data->jumlah_barang ?></span></td>
                 </tr>
                 <?php } ?>
               </table>
