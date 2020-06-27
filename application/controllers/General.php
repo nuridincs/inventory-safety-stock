@@ -6,6 +6,7 @@ class General extends CI_Controller{
   public function __construct()
   {
     parent::__construct();
+    $this->load->library('Pdf');
 
     $this->load->model('M_general');
   }
@@ -56,8 +57,7 @@ class General extends CI_Controller{
   function submitRequestBarang()
   {
     $request = $this->input->post('data');
-    $result = $this->unserializeForm($request);
-    $this->M_general->execute('save', 'app_barang_masuk', $result);
+    $this->M_general->execute('save', 'app_barang_masuk', $request);
   }
 
   function unserializeForm($request) {
@@ -102,15 +102,16 @@ class General extends CI_Controller{
 
     $_view = '<div class="form-group">';
       $_view .= '<label for="kode_jenis_barang">Kode Jenis Barang</label>';
-      $_view .= '<select name="update_kode_jenis_barang_lama" class="form-control" id="update_kode_jenis_barang_lama">';
-        foreach($getMasterBarang as $barang) {
-          if ($result['kode_jenis_barang'] == $barang->kode_jenis_barang) {
-            $_view .= '<option value="'.$barang->kode_jenis_barang.'" selected>'.$barang->kode_jenis_barang.'</option>';
-          } else {
-            $_view .= '<option value="'.$barang->kode_jenis_barang.'">'.$barang->kode_jenis_barang.'</option>';
-          }
-        }
-      $_view .= '</select>';
+      $_view .= '<input type="text" value="'.$result['kode_jenis_barang'].'" class="form-control" name="update_kode_jenis_barang_lama" disabled id="update_kode_jenis_barang_lama">';
+      // $_view .= '<select name="update_kode_jenis_barang_lama" class="form-control" id="update_kode_jenis_barang_lama">';
+      //   foreach($getMasterBarang as $barang) {
+      //     if ($result['kode_jenis_barang'] == $barang->kode_jenis_barang) {
+      //       $_view .= '<option value="'.$barang->kode_jenis_barang.'" selected>'.$barang->kode_jenis_barang.'</option>';
+      //     } else {
+      //       $_view .= '<option value="'.$barang->kode_jenis_barang.'">'.$barang->kode_jenis_barang.'</option>';
+      //     }
+      //   }
+      // $_view .= '</select>';
     $_view .= '</div>';
 
     $_view .= '<div class="form-group">';
@@ -157,11 +158,34 @@ class General extends CI_Controller{
     $request = $this->input->post('data');
     $table = $this->input->post('table');
 
-    if (!empty($role) == 'users') {
-      $request = $this->generateData($request);
+    if (!empty($role)) {
+      if($role == 'users'){
+        echo "user";
+        $request = $this->generateData($request);
+      }
+
+      if ($role == 'master_barang') {
+        $cek_kode_barang = $this->M_general->checkKodeBarang('app_barang', 'kode_jenis_barang', $request['kode_jenis_barang']);
+
+        if($cek_kode_barang->num_rows() == 1){
+          $result = [
+            'status' => 'error',
+            'msg' => 'Kode Barang sudah ada!',
+          ];
+          echo json_encode($result);
+          exit;
+        }
+      }
     }
 
     $this->M_general->execute('save', $table, $request);
+
+    $result = [
+      'status' => 'success',
+      'msg' => 'Data Berhasil disimpan',
+    ];
+
+    echo json_encode($result);
   }
 
   function ActionUpdate()
@@ -185,6 +209,156 @@ class General extends CI_Controller{
     $request = $this->input->post('data');
     $table = $this->input->post('table');
     $this->M_general->execute('delete', $table, $request);
+  }
+
+  function cetakLaporan()
+  {
+    $data = $this->M_general->getLaporan('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    // document informasi
+    $pdf->SetCreator('Inventory Persidiaan Barang');
+    $pdf->SetTitle('Laporan');
+    $pdf->SetSubject('Laporan');
+
+    //header Data
+    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
+    $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
+
+
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    //set margin
+    $pdf->SetMargins(PDF_MARGIN_LEFT,PDF_MARGIN_TOP + 10,PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM - 5);
+
+    //SET Scaling ImagickPixel
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    //FONT Subsetting
+    $pdf->setFontSubsetting(true);
+
+    $pdf->SetFont('helvetica','',14,'',true);
+
+    $pdf->AddPage('L');
+
+    $html=
+      '<div>
+        <h1 align="center">Laporan Barang</h1>
+
+        <table border="1" width="100" align="center">
+          <tr>
+            <th style="width:40px" align="center">No</th>
+            <th style="width:150px" align="center">Kode Jenis Barang</th>
+            <th style="width:150px" align="center">Nama Cabang</th>
+            <th style="width:150px" align="center">Tanggal Masuk</th>
+            <th style="width:150px" align="center">Tanggal Keluar</th>
+            <th style="width:200px" align="center">Jumlah Barang Keluar</th>
+            <th style="width:140px" align="center">Sisa Barang</th>
+          </tr>';
+
+          $no = 0;
+          foreach($data as $item) {
+            $no++;
+            $html .= '<tr>
+              <td>'.$no.'</td>
+              <td>'.$item->kode_jenis_barang.'</td>
+              <td>'.$item->nama_cabang.'</td>
+              <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
+              <td>'.$item->tanggal_keluar.'</td>
+              <td>'.$item->jumlah_barang_keluar.'</td>
+              <td>'.$item->jumlah_barang.'</td>
+            </tr>';
+        }
+
+        $html .='
+            </table>
+            <h6>Mengetahui</h6><br>
+            <h6>Admin</h6>
+          </div>';
+
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
+
+    $pdf->Output('report.pdf','I');
+  }
+
+  function cetakInvoice($id)
+  {
+    $data = $this->M_general->getInvoiceData($id);
+    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+    // document informasi
+    $pdf->SetCreator('Invoice');
+    $pdf->SetTitle('Invoice Barang Keluar');
+    $pdf->SetSubject('Barang Keluar');
+
+    //header Data
+    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
+    $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
+
+
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
+
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+    //set margin
+    $pdf->SetMargins(PDF_MARGIN_LEFT,PDF_MARGIN_TOP + 10,PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM - 5);
+
+    //SET Scaling ImagickPixel
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    //FONT Subsetting
+    $pdf->setFontSubsetting(true);
+
+    $pdf->SetFont('helvetica','',14,'',true);
+
+    $pdf->AddPage('L');
+
+    $html=
+      '<div>
+        <h1 align="center">Invoice Bukti Pengeluaran Barang</h1>
+
+        <table border="1">
+          <tr>
+            <th style="width:40px" align="center">No</th>
+            <th style="width:200px" align="center">Kode Jenis Barang</th>
+            <th style="width:200px" align="center">Tanggal Masuk</th>
+            <th style="width:200px" align="center">Tanggal Keluar</th>
+            <th style="width:250" align="center">Jumlah Barang Keluar</th>
+          </tr>';
+      $no = 0;
+      foreach($data as $item) {
+        $no++;
+        $html .= '<tr>
+                    <td align="center">'.$no.'</td>
+                    <td align="center">'.$item->kode_jenis_barang.'</td>
+                    <td align="center">'.$item->tanggal_masuk.'</td>
+                    <td align="center">'.$item->tanggal_keluar.'</td>
+                    <td align="center">'.$item->jumlah_barang_keluar.'</td>
+                 </tr>';
+      }
+
+        $html .='
+            </table>
+            <h6>Mengetahui</h6><br>
+            <h6>Admin</h6>
+          </div>';
+
+    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
+
+    $pdf->Output('contoh_report.pdf','I');
   }
 
 }

@@ -75,6 +75,7 @@
               <div class="form-group">
                 <label for="kode_jenis_barang">Kode Jenis Barang</label>
                 <input type="text" class="form-control" name="kode_jenis_barang" id="kode_jenis_barang" placeholder="Masukan Kode Barang">
+                <small id="check_kode_barang" class="alert-danger">Kode Barang sudah ada!</small>
               </div>
               <div class="form-group">
                 <label for="minimum_stok">Minimum Stok</label>
@@ -161,6 +162,8 @@
   $(function() {
     $('#kode_jenis_barang_baru').hide();
 
+    $('#check_kode_barang').hide();
+
     $('#jenis_barang').change(function(){
         if($('#jenis_barang').val() == 2) {
           $('#kode_jenis_barang_lama').hide();
@@ -193,10 +196,18 @@
           minimum_stok: minimum_stok,
         },
         table: 'app_barang',
+        role: 'master_barang',
       }
 
       $.post("ActionAdd", formData, function( data ) {
-        window.location.reload();
+        const result = JSON.parse(data);
+
+        if(result.status == 'error') {
+          $('#check_kode_barang').show();
+        } else {
+          $('#check_kode_barang').hide();
+          window.location.reload();
+        }
       });
     })
 

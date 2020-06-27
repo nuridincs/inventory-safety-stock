@@ -12,7 +12,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Laporan</h1>
-            <button class="btn btn-info btn-sm mt-3">Cetak Laporan</button>
+            <a href="cetakLaporan" class="btn btn-info btn-sm mt-3">Cetak Laporan</a>
           </div>
         </div>
       </div>

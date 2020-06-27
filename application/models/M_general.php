@@ -18,6 +18,26 @@ class M_general extends CI_Model {
     return $query->result_array()[0];
   }
 
+  public function getInvoiceData($id)
+  {
+    $query = $this->db->select('*')
+            ->from('app_barang_masuk')
+            ->join('app_barang_keluar', 'app_barang_keluar.kode_jenis_barang=app_barang_masuk.kode_jenis_barang')
+            ->where('app_barang_masuk.kode_jenis_barang', $id)
+            ->get();
+
+    return $query->result();
+  }
+
+  public function checkKodeBarang($table, $idName, $id) {
+    $query = $this->db->select('*')
+              ->from($table)
+              ->where($idName, $id)
+              ->get();
+
+    return $query;
+  }
+
   public function getJoinData($uniqid, $table1, $table2)
   {
     $query = $this->db->select('*')
@@ -54,7 +74,7 @@ class M_general extends CI_Model {
             'status_permintaan'  => 'verifikasi',
             'jumlah_barang'  => $resultBarang['jumlah_barang'] + $data['jumlah_barang'],
             'status_barang'  => 2,
-            'keterangan'  => $data['keterangan'],
+            'keterangan'  => str_replace('%20', ' ', $data['keterangan']),
           ];
 
           $this->execute('update', $type, $dataBarang);
@@ -65,8 +85,9 @@ class M_general extends CI_Model {
             'status_permintaan'  => 'verifikasi',
             'jumlah_barang'  => $data['jumlah_barang'],
             'status_barang'  => 2,
-            'keterangan'  => $data['keterangan'],
+            'keterangan'  => str_replace('%20', ' ', $data['keterangan']),
           ];
+
 
           $this->db->insert('app_barang', array('kode_jenis_barang' => $data['kode_jenis_barang_baru'], 'minimum_stok' => 0));
           $this->db->insert($type, $dataBarang);
@@ -74,7 +95,16 @@ class M_general extends CI_Model {
       } elseif ($type == 'app_barang_keluar') {
         $this->db->insert($type, $data);
       } elseif ($type == 'app_barang') {
+        $dataBarangMasuk = [
+          'kode_jenis_barang' => $data['kode_jenis_barang'],
+          'id_cabang' => 6,
+          'jumlah_barang' => 0,
+          'status_barang' => 0,
+          'status_permintaan' => 'tidak_tersedia',
+        ];
+
         $this->db->insert($type, $data);
+        $this->db->insert('app_barang_masuk', $dataBarangMasuk);
       } else {
         $this->db->insert($type, $data);
       }
@@ -106,13 +136,41 @@ class M_general extends CI_Model {
       } elseif ($type == 'master_barang') {
         $this->db->where('kode_jenis_barang', $data['id']);
         $this->db->update('app_barang', array('minimum_stok' => $data['minimum_stok']));
+      } elseif($data['table'] == 'app_users') {
+
+        $dataUser = [
+          'nama' => $data['request']['nama'],
+          'email' => $data['request']['email'],
+        ];
+
+        if ($data['request']['password'] != '') {
+          $dataUser = [
+            'nama' => $data['request']['nama'],
+            'email' => $data['request']['email'],
+            'password' => md5($data['request']['password']),
+          ];
+        }
+
+        $this->db->where($type, $data['id']);
+        $this->db->update($data['table'], $dataUser);
       } else {
         $this->db->where($type, $data['id']);
         $this->db->update($data['table'], $data['request']);
       }
     } elseif ($action == 'delete') {
-      $this->db->where($data['idName'], $data['id']);
-      $this->db->delete($type);
+      if ($type == 'app_barang') {
+        $this->db->where('kode_jenis_barang', $data['id']);
+        $this->db->delete('app_barang_keluar');
+
+        $this->db->where('kode_jenis_barang', $data['id']);
+        $this->db->delete('app_barang_masuk');
+
+        $this->db->where('kode_jenis_barang', $data['id']);
+        $this->db->delete('app_barang');
+      } else {
+        $this->db->where($data['idName'], $data['id']);
+        $this->db->delete($type);
+      }
     }
   }
 }

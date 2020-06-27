@@ -38,7 +38,7 @@
                   foreach($barang as $data) {
                     $no++;
 
-                    $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>';
+                    $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
                     if ($data->status_barang == 1) {
                       $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\', \''.$data->minimum_stok.'\', \''.$data->jumlah_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
                     }
@@ -52,7 +52,7 @@
                     }
 
                     if ($data->minimum_stok >= $data->jumlah_barang) {
-                      $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>';
+                      $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
                     }
                 ?>
                 <tr>
@@ -103,12 +103,13 @@
               </div>
               <div class="form-group">
                 <label for="kode_jenis_barang">Kode Jenis Barang</label>
-                <input type="text" class="form-control" placeholder="Masukan Kode Jenis Barang" name="kode_jenis_barang_baru" id="kode_jenis_barang_baru">
-                <select name="kode_jenis_barang_lama" class="form-control" id="kode_jenis_barang_lama">
-                  <?php foreach($barang as $barang) { ?>
-                    <option value="<?= $barang->kode_jenis_barang; ?>"><?= $barang->kode_jenis_barang; ?></option>
-                  <?php } ?>
-                </select>
+                <input type="text" class="form-control" placeholder="Masukan Kode Jenis Barang" required="required" name="kode_jenis_barang_baru" id="kode_jenis_barang_baru">
+                <input type="text" class="form-control" name="kode_jenis_barang_lama" disabled id="kode_jenis_barang_lama">
+                <!-- <select name="kode_jenis_barang_lama" class="form-control" id="kode_jenis_barang_lama">
+                  <?php //foreach($barang as $barang) { ?>
+                    <option value="<?//= $barang->kode_jenis_barang; ?>"><?//= $barang->kode_jenis_barang; ?></option>
+                  <?php //} ?>
+                </select> -->
               </div>
               <div class="form-group">
                 <label for="cabang">Cabang</label>
@@ -275,8 +276,29 @@
     });
 
     $('#submitpp').click(function() {
-      const formData = $('#form_data').serialize();
+      const jenis_barang = $('#jenis_barang').val();
+      const kode_jenis_barang_lama = $('#kode_jenis_barang_lama').val();
+      const kode_jenis_barang_baru = $('#kode_jenis_barang_baru').val();
+      const cabang = $('#cabang').val();
       const jumlah_barang = $('#jumlah_barang').val();
+      const keterangan = $('#keterangan').val();
+
+      const formData = {
+        data: {
+          jenis_barang: jenis_barang,
+          kode_jenis_barang_lama: kode_jenis_barang_lama,
+          kode_jenis_barang_baru: kode_jenis_barang_baru,
+          cabang: cabang,
+          jumlah_barang: jumlah_barang,
+          keterangan: keterangan,
+        }
+      }
+
+      if (jenis_barang === '2' && kode_jenis_barang_baru === '') {
+        alert('Kode Barang Wajib diisi');
+
+        return;
+      }
 
       if (jumlah_barang === '') {
         alert('Jumlah Barang Wajib diisi');
@@ -284,7 +306,7 @@
         return;
       }
 
-      $.post("submitRequestBarang", { data: formData }, function( data ) {
+      $.post("submitRequestBarang", formData, function( data ) {
         window.location.reload();
       });
     })
@@ -345,10 +367,10 @@
       const tanggal_keluar = $('#tanggal_keluar').val();
       const calculate_stok = parseInt(jumlah_stok_barang) - parseInt(minimum_stok);
 
-      console.log('minimum_stok', minimum_stok);
-      console.log('calculate_stok', calculate_stok);
-      console.log('jumlah_siapkan_barang', jumlah_siapkan_barang);
-      console.log('jumlah_stok_barang', jumlah_stok_barang);
+      // console.log('minimum_stok', minimum_stok);
+      // console.log('calculate_stok', calculate_stok);
+      // console.log('jumlah_siapkan_barang', jumlah_siapkan_barang);
+      // console.log('jumlah_stok_barang', jumlah_stok_barang);
 
       // if (jumlah_stok_barang <= minimum_stok) {
       //   alert('1 Jumlah Stok Barang yang Anda inginkan dalam batas limit, silahkan lakukan PO');
@@ -387,6 +409,7 @@
 
   function getID(id, minimum_stok = 0, jumlah_barang = 0)
   {
+    $('#kode_jenis_barang_lama').val(id);
     $('#idselected').val(id);
     $('#minimum_stok').val(minimum_stok);
     $('#jumlah_stok_barang').val(jumlah_barang);

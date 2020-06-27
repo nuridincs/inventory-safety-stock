@@ -47,7 +47,7 @@
                   <td><?= $data->tanggal_keluar ?></td>
                   <td class="text-center"><?= $data->jumlah_barang_keluar ?></td>
                   <td>
-                    <button class="btn btn-danger btn-sm">Cetak Data</button>
+                    <a href="<?= base_url('general/cetakInvoice/'.$data->kode_jenis_barang) ?>" class="btn btn-danger btn-sm">Cetak Data</a>
                   </td>
                 </tr>
                 <?php } ?>

@@ -127,10 +127,10 @@
                   <label for="email">Email</label>
                   <input type="email" class="form-control" name="update_email" id="update_email" required>
                 </div>
-                <!-- <div class="form-group">
+                <div class="form-group">
                   <label for="password">Password</label>
                   <input type="password" class="form-control" name="update_password" id="update_password" required>
-                </div> -->
+                </div>
                 <!-- <div class="form-group">
                   <label for="update_role">Role</label>
                   <select name="update_id_users_role" class="form-control" id="update_id_users_role">
@@ -234,6 +234,7 @@
         data: {
           nama: nama,
           email: email,
+          password: password,
         },
         id: id,
         table: 'app_users',
@@ -283,7 +284,7 @@
       const result = JSON.parse(data);
       $('#update_nama').val(result.nama);
       $('#update_email').val(result.email);
-      $('#update_password').val(result.password);
+      // $('#update_password').val(result.password);
       // $('#update_email').val(result.email);
 
       // const password = $('#update_password').val();
