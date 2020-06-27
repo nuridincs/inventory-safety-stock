@@ -9,6 +9,12 @@ class General extends CI_Controller{
     $this->load->library('Pdf');
 
     $this->load->model('M_general');
+
+    $cekUserLogin = $this->session->userdata('status');
+
+    if ($cekUserLogin != 'login') {
+      redirect('auth');
+    }
   }
 
   function index()
@@ -342,19 +348,19 @@ class General extends CI_Controller{
       foreach($data as $item) {
         $no++;
         $html .= '<tr>
-                    <td align="center">'.$no.'</td>
-                    <td align="center">'.$item->kode_jenis_barang.'</td>
-                    <td align="center">'.$item->tanggal_masuk.'</td>
-                    <td align="center">'.$item->tanggal_keluar.'</td>
-                    <td align="center">'.$item->jumlah_barang_keluar.'</td>
-                 </tr>';
+          <td align="center">'.$no.'</td>
+          <td align="center">'.$item->kode_jenis_barang.'</td>
+          <td align="center">'.$item->tanggal_masuk.'</td>
+          <td align="center">'.$item->tanggal_keluar.'</td>
+          <td align="center">'.$item->jumlah_barang_keluar.'</td>
+        </tr>';
       }
 
-        $html .='
-            </table>
-            <h6>Mengetahui</h6><br>
-            <h6>Admin</h6>
-          </div>';
+      $html .='
+          </table>
+          <h6>Mengetahui</h6><br>
+          <h6>Admin</h6>
+        </div>';
 
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
 
