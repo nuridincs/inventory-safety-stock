@@ -41,7 +41,7 @@ class General extends CI_Controller{
   function laporan()
   {
     $data['content'] = 'content/laporan';
-    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $data['barang'] = $this->M_general->getLaporan('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
     $this->load->view('template', $data);
   }
 

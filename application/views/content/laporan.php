@@ -12,7 +12,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Laporan</h1>
-            <button class="btn btn-primary btn-sm mt-3">Cetak Laporan</button>
+            <button class="btn btn-info btn-sm mt-3">Cetak Laporan</button>
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
                 <tr>
                   <th>Nomor</th>
                   <th>Kode Jenis Barang</th>
-                  <!-- <th>Stok Barang</th> -->
+                  <th>Nama Cabang</th>
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
                   <th>Jumlah Barang Keluar</th>
@@ -45,7 +45,7 @@
                 <tr>
                   <td><?= $no ?></td>
                   <td><?= $data->kode_jenis_barang ?></td>
-                  <!-- <td><?//= $data->jumlah_barang ?></td> -->
+                  <td><?= $data->nama_cabang ?></td>
                   <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)); ?></td>
                   <td><?= $data->tanggal_keluar ?></td>
                   <td><?= $data->jumlah_barang_keluar ?></td>

@@ -28,6 +28,19 @@ class M_general extends CI_Model {
     return $query->result();
   }
 
+  public function getLaporan($uniqid, $table1, $table2)
+  {
+    $query = $this->db->select('app_barang_masuk.kode_jenis_barang, app_barang_masuk.jumlah_barang, app_cabang.nama_cabang, app_barang_masuk.tanggal_masuk, app_barang_keluar.tanggal_keluar, app_barang_keluar.jumlah_barang_keluar')
+            ->from($table1)
+            ->join($table2, $table2.'.'.$uniqid.'='.$table1.'.'.$uniqid, 'left')
+            ->join('app_cabang', 'app_cabang.id='.$table1.'.id_cabang')
+            ->get();
+
+    // echo $this->db->last_query();die;
+
+    return $query->result();
+  }
+
   public function execute($action, $type, $data)
   {
     if($action == 'save') {
