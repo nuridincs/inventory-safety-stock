@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PT. RUBBERMAN | Dashboard</title>
+	<title>PT. NINA UTAMA | Dashboard</title>
 	<!-- meta -->
 	<?php require_once 'template/_meta.php'; ?>
 
@@ -18,7 +18,7 @@
 		<!-- header -->
 		<?php require_once 'template/_nav.php'; ?>
 		<!-- sidebar -->
-		<?php require_once 'template/_sidebar.php'; ?>
+		<?php //require_once 'template/_sidebar.php'; ?>
 		<?php $this->load->view($content); ?>
 		<?php require_once 'template/_footer.php'; ?>
 	</div>

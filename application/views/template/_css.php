@@ -18,3 +18,4 @@
 <link href="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
 <!-- bootstrap wysihtml5 - text editor -->
 <link href="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet">
+<link href="<?php echo base_url('assets');?>/vendor/AdminLTE-3.0.0-alpha/dist/css/style.css" rel="stylesheet">

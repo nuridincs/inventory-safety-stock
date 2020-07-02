@@ -287,12 +287,12 @@ class General extends CI_Controller{
         $html .='
             </table>
             <h6>Mengetahui</h6><br>
-            <h6>Admin</h6>
+            <h6>Manager</h6>
           </div>';
 
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
 
-    $pdf->Output('report.pdf','I');
+    $pdf->Output('report.pdf', 'I');
   }
 
   function cetakInvoice($id)
@@ -359,12 +359,12 @@ class General extends CI_Controller{
       $html .='
           </table>
           <h6>Mengetahui</h6><br>
-          <h6>Admin</h6>
+          <h6>Manager</h6>
         </div>';
 
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
 
-    $pdf->Output('contoh_report.pdf','I');
+    $pdf->Output('contoh_report.pdf', 'I');
   }
 
 }

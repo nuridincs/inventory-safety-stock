@@ -1,25 +1,12 @@
-<!-- Main Sidebar Container -->
+<!-- 
 <aside class="main-sidebar sidebar-dark-primary elevation-4 bg-sidebar">
-	<!-- Brand Logo -->
 	<a href="/general" class="brand-link my-3 text-primary">
 		<img src="<?php echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
 				 style="opacity: .8">
-		<span class="brand-text font-weight-light">PT. RUBBERMAN</span>
+		<span class="brand-text font-weight-light">PT. NINA UTAMA</span>
 	</a>
 
-	<!-- Sidebar -->
 	<div class="sidebar">
-		<!-- Sidebar user panel (optional) -->
-		<!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="image">
-				<img src="<?php //echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-			</div>
-			<div class="info">
-				<a href="#" class="d-block"><?php //echo $this->session->userdata('nama'); ?></a>
-			</div>
-		</div> -->
-
-		<!-- Sidebar Menu -->
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 					<li class="nav-item">
@@ -128,4 +115,4 @@ $(".nav-link").on("click", function(){
 	$(".nav-link").removeClass(localStorage.getItem("status"));
 	$(this).addClass(localStorage.getItem("status"));
 });
-</script>
+</script> -->

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PT. RUBBERMAN | Dashboard</title>
+	<title>PT. NINA UTAMA | Dashboard</title>
 	<!-- meta -->
 	<?php require_once 'template/_meta.php'; ?>
 
@@ -20,7 +20,7 @@
 		<!-- sidebar -->
 		<?php require_once 'template/_sidebar.php'; ?>
 
-		<div class="content-wrapper">
+		<div class="content-wrapper" style="height: 30vw !important;">
 	    <!-- Content Header (Page header) -->
 	    <div class="content-header">
 	      <div class="container-fluid">
@@ -606,7 +606,7 @@
 	    <!-- Control sidebar content goes here -->
 	  </aside>
 	  <!-- /.control-sidebar -->
-		<?php require_once 'template/_footer.php'; ?>
+		<?php //require_once 'template/_footer.php'; ?>
 	</div>
 	<!-- ./wrapper -->
 	<!-- js -->

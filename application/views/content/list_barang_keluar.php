@@ -6,7 +6,7 @@
   <title>Data Barang Keluar</title>
 </head>
 <body>
-  <div class="content-wrapper">
+  <div class="content-wrappers container m-auto">
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <section class="content">
+    <section class="content" style="height: 45vw !important">
       <div class="row">
         <div class="col-12">
           <div class="card">

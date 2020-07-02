@@ -35,6 +35,9 @@ class M_general extends CI_Model {
               ->where($idName, $id)
               ->get();
 
+    // echo $this->db->last_query();die;
+
+
     return $query;
   }
 
