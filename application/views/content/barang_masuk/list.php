@@ -20,6 +20,7 @@
     <section class="content">
       <div class="row">
         <div class="col-12">
+          <a href="<?= base_url('general/form/barang_masuk') ?>" class="btn btn-warning w-25">Tambah Barang Masuk</a><br><br>
           <div class="card">
             <div class="card-body table-responsive p-0">
               <table id="example2" class="table table-hover text-nowrap">
@@ -28,6 +29,7 @@
                   <th>Nomor</th>
                   <th>Kode Jenis Barang</th>
                   <th>Jumlah Barang</th>
+                  <th>Tanggal Masuk</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -59,6 +61,7 @@
                   <td><?= $no ?></td>
                   <td><?= $data->kode_jenis_barang ?></td>
                   <td><?= $data->jumlah_barang ?></td>
+                  <td><?= date('d-m-Y', strtotime($data->tanggal_masuk)) ?></td>
                   <td><?= $status_barang ?></td>
                   <td>
                     <?php if ($data->minimum_stok <= $data->jumlah_barang) { ?>

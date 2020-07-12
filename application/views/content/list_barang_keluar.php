@@ -20,6 +20,7 @@
     <section class="content" style="height: 45vw !important">
       <div class="row">
         <div class="col-12">
+          <a href="<?= base_url('general/form/barang_keluar') ?>" class="btn btn-primary w-25">Tambah Barang Keluar</a><br><br>
           <div class="card">
             <div class="card-body table-responsive p-0">
               <!-- <button class="btn btn-dark btn-sm mb-3" data-toggle="modal" data-target="#modalTambah">Tambah</button> -->

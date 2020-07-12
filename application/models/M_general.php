@@ -48,6 +48,20 @@ class M_general extends CI_Model {
             ->join($table2, $table2.'.'.$uniqid.'='.$table1.'.'.$uniqid)
             ->get();
 
+    // echo $this->db->last_query();die;
+
+    return $query->result();
+  }
+
+  public function getBarangKeluar()
+  {
+    $query = $this->db->select('*')
+          ->from('app_barang_masuk')
+          ->join('app_barang_keluar', 'app_barang_keluar.kode_jenis_barang=app_barang_masuk.kode_jenis_barang')
+          ->where('app_barang_masuk.jumlah_barang > 0')
+          // ->group_by('app_barang_masuk.kode_jenis_barang')
+          ->get();
+
     return $query->result();
   }
 

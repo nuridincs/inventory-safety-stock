@@ -3,7 +3,7 @@
 	<a href="/general" class="brand-link my-3 text-primary">
 		<img src="<?php echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
 				 style="opacity: .8">
-		<span class="brand-text font-weight-light">PT. NINA UTAMA</span>
+		<span class="brand-text font-weight-light">PT. DEKASARI</span>
 	</a>
 
 	<div class="sidebar">

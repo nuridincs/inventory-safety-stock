@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PT. NINA UTAMA | Dashboard</title>
+	<title>PT. DEKASARI | Dashboard</title>
 	<!-- meta -->
 	<?php require_once 'template/_meta.php'; ?>
 

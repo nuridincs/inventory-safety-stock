@@ -41,7 +41,7 @@ class General extends CI_Controller{
   function listBarangKeluar()
   {
     $data['content'] = 'content/list_barang_keluar';
-    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $data['barang'] = $this->M_general->getBarangKeluar('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
     $this->load->view('template', $data);
   }
 
@@ -228,11 +228,6 @@ class General extends CI_Controller{
     $pdf->SetTitle('Laporan');
     $pdf->SetSubject('Laporan');
 
-    //header Data
-    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
-    $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
-
-
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
     $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
 
@@ -305,11 +300,6 @@ class General extends CI_Controller{
     $pdf->SetTitle('Invoice Barang Keluar');
     $pdf->SetSubject('Barang Keluar');
 
-    //header Data
-    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
-    $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
-
-
     $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
     $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
 
@@ -367,4 +357,90 @@ class General extends CI_Controller{
     $pdf->Output('contoh_report.pdf', 'I');
   }
 
+  public function form($form)
+  {
+    $data['content'] = 'content/form/'.$form;
+    $data['dataBarang'] = $this->M_general->getData('app_barang');
+    $this->load->view('template', $data);
+  }
+
+  public function actionAddForm($table)
+  {
+    $request = $this->input->post();
+    $data = [];
+    $redirect = '/';
+
+    if ($table == 'app_barang_masuk') {
+      $data = [
+        'kode_jenis_barang' => $request['kode_jenis_barang'],
+        'status_permintaan' => 'tersedia',
+        'jumlah_barang' => $request['jumlah_barang'],
+        'status_barang' => 1,
+      ];
+
+      $redirect = '/listBarangMasuk';
+    }
+
+    $this->db->insert($table, $data);
+
+    redirect('general'.$redirect);
+  }
+
+  public function actionUpdateFifo()
+  {
+    $request = $this->input->post();
+    $jumlah_barang = $this->input->post('jumlah_barang');
+
+    $totalStok = $this->db->select_sum('jumlah_barang')
+              ->from('app_barang_masuk')
+              ->order_by('tanggal_masuk desc')
+              ->where('kode_jenis_barang', $request['kode_jenis_barang'])
+              ->get()->row();
+
+    $getAscData = $this->db->select('*')
+                ->from('app_barang_masuk')
+                ->order_by('tanggal_masuk ASC')
+                ->where('kode_jenis_barang', $request['kode_jenis_barang'])
+                ->where('jumlah_barang > 0')
+                ->get()->result();
+
+
+    // echo $this->db->last_query();
+
+    if ($request['jumlah_barang'] <= $totalStok) {
+      foreach ($getAscData as $value) {
+        $tgl = $value->tanggal_masuk;
+        $stok = $value->jumlah_barang;
+
+        if($stok > 0) {
+          $temp = $jumlah_barang;
+          $jumlah_barang = $jumlah_barang - $stok;
+
+          if($jumlah_barang > 0) {
+            $stok_update = 0;
+          }else{
+            $stok_update = $stok - $temp;
+          }
+
+          $this->db->where('kode_jenis_barang', $request['kode_jenis_barang']);
+          $this->db->where('tanggal_masuk', $tgl);
+          $this->db->update('app_barang_masuk', array('jumlah_barang' => $stok_update));
+
+          // echo $this->db->last_query();
+        }
+      }
+
+      $barangKeluar = [
+        'kode_jenis_barang' => $request['kode_jenis_barang'],
+        'jumlah_barang_keluar' => $request['jumlah_barang'],
+        'tanggal_keluar' => $request['tanggal_keluar'],
+      ];
+
+      $this->db->insert('app_barang_keluar', $barangKeluar);
+    }
+
+    redirect('general/listBarangKeluar');
+
+    // print_r($getAscData);
+  }
 }

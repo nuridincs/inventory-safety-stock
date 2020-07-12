@@ -2,6 +2,11 @@
   margin-left: unset !important;
 }
 
+.wrapper-nav {
+  max-width: 100%;
+  margin: 1rem;
+}
+
 /* .content-header {
   height: 30vw !important;
 } */

@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-headers container navbar navbar-expand bg-white navbar-light border-bottom">
+<nav class="main-headers container navbar navbar-expand bg-white navbar-light border-bottom wrapper-nav">
 	<!-- Left navbar links -->
 	<!-- <ul class="navbar-nav">
 		<li class="nav-item">
@@ -8,7 +8,7 @@
 	</ul> -->
 	<ul class="navbar-nav">
 		<li class="nav-item d-flex align-items-center">
-			<h4>PT. Nina</h4>
+			<h4>PT. DEKASARI</h4>
 		</li>
 		<li class="nav-item">
 			<a href="<?php echo base_url('/general') ?>" class="nav-link">
