@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.27)
 # Database: db_inv_doni
-# Generation Time: 2020-06-21 14:36:50 +0000
+# Generation Time: 2020-07-13 13:42:56 +0000
 # ************************************************************
 
 
@@ -37,12 +37,13 @@ LOCK TABLES `app_barang` WRITE;
 
 INSERT INTO `app_barang` (`kode_jenis_barang`, `minimum_stok`, `created_at`)
 VALUES
-	('RAB000LO',10,'2020-06-20 22:33:27'),
-	('RAB11LL',100,'2020-06-20 12:58:39'),
-	('RAB140BB',70,'2020-06-15 21:20:27'),
-	('RAB150CC',20,'2020-06-20 10:44:47'),
-	('RAB160BB',29,'2020-06-15 21:20:27'),
-	('RAB160CL',10,'2020-06-15 21:20:27');
+	('dino123',213,'2020-07-13 20:33:55'),
+	('RAB11LL',99,'2020-07-13 16:05:52'),
+	('RAB140BB',70,'2020-07-13 16:05:39'),
+	('RAB150CC',20,'2020-07-13 16:06:09'),
+	('RAB160BB',29,'2020-07-13 16:06:21'),
+	('RAB160CL',10,'2020-07-13 16:06:36'),
+	('RAR193CR',100,'2020-07-13 20:05:48');
 
 /*!40000 ALTER TABLE `app_barang` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -68,7 +69,8 @@ LOCK TABLES `app_barang_keluar` WRITE;
 
 INSERT INTO `app_barang_keluar` (`id`, `kode_jenis_barang`, `jumlah_barang_keluar`, `tanggal_keluar`)
 VALUES
-	(1,'RAB140BB',50,'2020-06-20');
+	(16,'RAB11LL',120,'2020-07-13'),
+	(17,'RAR193CR',20,'2020-07-13');
 
 /*!40000 ALTER TABLE `app_barang_keluar` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -100,12 +102,12 @@ LOCK TABLES `app_barang_masuk` WRITE;
 
 INSERT INTO `app_barang_masuk` (`id`, `kode_jenis_barang`, `id_cabang`, `status_permintaan`, `jumlah_barang`, `status_barang`, `keterangan`, `tanggal_masuk`)
 VALUES
-	(1,'RAB140BB',1,'tersedia',50,1,NULL,'2020-06-20 00:00:00'),
-	(2,'RAB160BB',2,'tersedia',50,1,NULL,'2020-06-20 00:00:00'),
-	(3,'RAB160CL',1,'tidak_tersedia',0,0,NULL,'2020-06-20 00:00:00'),
-	(4,'RAB150CC',4,'sedang_diproses',100,3,NULL,'2020-06-20 00:00:00'),
-	(5,'RAB11LL',4,'verifikasi',200,2,'Test','2020-06-20 00:00:00'),
-	(6,'RAB000LO',1,'verifikasi',111,2,'test%20bro','2020-06-20 00:00:00');
+	(5,'RAB140BB',1,'verifikasi',1000,2,'','2020-07-13 16:05:39'),
+	(6,'RAB11LL',3,'tersedia',880,1,'urgen','2020-07-13 16:05:52'),
+	(8,'RAB160BB',1,'verifikasi',111,2,'','2020-07-13 16:06:21'),
+	(9,'RAB160CL',6,'tidak_tersedia',0,0,NULL,'2020-07-13 16:06:36'),
+	(10,'RAR193CR',1,'tersedia',100,1,'','2020-07-13 20:05:48'),
+	(11,'dino123',6,'tidak_tersedia',0,0,NULL,'2020-07-13 20:33:55');
 
 /*!40000 ALTER TABLE `app_barang_masuk` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -131,32 +133,11 @@ VALUES
 	(2,'Bandung'),
 	(3,'Cilacap'),
 	(4,'Tegal'),
-	(5,'Medan');
+	(5,'Medan'),
+	(6,'Belum ditentukan');
 
 /*!40000 ALTER TABLE `app_cabang` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-# Dump of table app_planning_production
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `app_planning_production`;
-
-CREATE TABLE `app_planning_production` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `kode_jenis_barang` char(50) DEFAULT NULL,
-  `id_cabang` int(11) DEFAULT NULL,
-  `jumlah_barang` int(11) DEFAULT NULL,
-  `keterangan` varchar(50) DEFAULT NULL,
-  `status` int(11) DEFAULT NULL COMMENT '1=ready, 0 = on progress',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `master barang` (`kode_jenis_barang`),
-  KEY `cabang` (`id_cabang`),
-  CONSTRAINT `cabang` FOREIGN KEY (`id_cabang`) REFERENCES `app_cabang` (`id`),
-  CONSTRAINT `master barang` FOREIGN KEY (`kode_jenis_barang`) REFERENCES `app_barang` (`kode_jenis_barang`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
 # Dump of table app_role
@@ -217,11 +198,10 @@ LOCK TABLES `app_users` WRITE;
 
 INSERT INTO `app_users` (`id`, `id_users_role`, `nama`, `email`, `password`)
 VALUES
-	(1,1,'admin','admin@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(2,2,'produksi','produksi@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(3,3,'manager','manager@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(4,4,'staff','staff@gmail.com','202cb962ac59075b964b07152d234b70'),
-	(5,1,'admin test','admin.test@gmail.com','202cb962ac59075b964b07152d234b70');
+	(1,1,'Admin test','admin@gmail.com','c06db68e819be6ec3d26c6038d8e8d1f'),
+	(3,3,'Manager','manager@gmail.com','202cb962ac59075b964b07152d234b70'),
+	(4,4,'IT Staff','it.staff@gmail.com','202cb962ac59075b964b07152d234b70'),
+	(5,1,'Admin test','admin.test@gmail.com','202cb962ac59075b964b07152d234b70');
 
 /*!40000 ALTER TABLE `app_users` ENABLE KEYS */;
 UNLOCK TABLES;
