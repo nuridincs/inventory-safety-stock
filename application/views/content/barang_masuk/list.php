@@ -22,6 +22,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body table-responsive p-0">
+              <button class="btn btn-primary btn-sm m-3" data-toggle="modal" data-target="#modalPP">Buat Permintaan</button>
               <table id="example2" class="table table-hover text-nowrap">
                 <thead>
                 <tr>
@@ -38,7 +39,8 @@
                   foreach($barang as $data) {
                     $no++;
 
-                    $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
+                    // $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
+                    $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span>';
                     if ($data->status_barang == 1) {
                       $status_barang = '<span class="badge badge-success">Tersedia</span><br><button class="btn btn-primary btn-sm badge" onClick="getID(\''.$data->kode_jenis_barang.'\', \''.$data->minimum_stok.'\', \''.$data->jumlah_barang.'\')" data-toggle="modal" data-target="#modalSiapkanBarang">Siapkan Barang</button>';
                     }
@@ -52,7 +54,8 @@
                     }
 
                     if ($data->minimum_stok >= $data->jumlah_barang) {
-                      $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
+                      // $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span><br><button class="btn btn-primary btn-sm badge" data-toggle="modal" onClick="getID(\''.$data->kode_jenis_barang.'\')" data-target="#modalPP">Buat Permintaan</button>';
+                      $status_barang = '<span class="badge badge-danger">Tidak Tersedia</span>';
                     }
                 ?>
                 <tr>
@@ -104,12 +107,12 @@
               <div class="form-group">
                 <label for="kode_jenis_barang">Kode Jenis Barang</label>
                 <input type="text" class="form-control" placeholder="Masukan Kode Jenis Barang" required="required" name="kode_jenis_barang_baru" id="kode_jenis_barang_baru">
-                <input type="text" class="form-control" name="kode_jenis_barang_lama" disabled id="kode_jenis_barang_lama">
-                <!-- <select name="kode_jenis_barang_lama" class="form-control" id="kode_jenis_barang_lama">
-                  <?php //foreach($barang as $barang) { ?>
-                    <option value="<?//= $barang->kode_jenis_barang; ?>"><?//= $barang->kode_jenis_barang; ?></option>
-                  <?php //} ?>
-                </select> -->
+                <!-- <input type="text" class="form-control" name="kode_jenis_barang_lama" disabled id="kode_jenis_barang_lama"> -->
+                <select name="kode_jenis_barang_lama" class="form-control" id="kode_jenis_barang_lama">
+                  <?php foreach($barang as $barang) { ?>
+                    <option value="<?= $barang->kode_jenis_barang; ?>"><?= $barang->kode_jenis_barang; ?></option>
+                  <?php } ?>
+                </select>
               </div>
               <div class="form-group">
                 <label for="cabang">Cabang</label>

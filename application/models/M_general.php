@@ -80,6 +80,8 @@ class M_general extends CI_Model {
             'keterangan'  => str_replace('%20', ' ', $data['keterangan']),
           ];
 
+          // print_r($dataBarang);die('barang lama');
+
           $this->execute('update', $type, $dataBarang);
         } else {
           $dataBarang = [ //insert barang baru
@@ -91,6 +93,7 @@ class M_general extends CI_Model {
             'keterangan'  => str_replace('%20', ' ', $data['keterangan']),
           ];
 
+          // print_r($dataBarang);die('barang baru');
 
           $this->db->insert('app_barang', array('kode_jenis_barang' => $data['kode_jenis_barang_baru'], 'minimum_stok' => 0));
           $this->db->insert($type, $dataBarang);

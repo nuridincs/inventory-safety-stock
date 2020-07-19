@@ -166,7 +166,6 @@ class General extends CI_Controller{
 
     if (!empty($role)) {
       if($role == 'users'){
-        echo "user";
         $request = $this->generateData($request);
       }
 
@@ -367,4 +366,10 @@ class General extends CI_Controller{
     $pdf->Output('contoh_report.pdf', 'I');
   }
 
+  public function form($form)
+  {
+    $data['content'] = 'content/form/'.$form;
+    $data['dataBarang'] = $this->M_general->getData('app_barang');
+    $this->load->view('template', $data);
+  }
 }
