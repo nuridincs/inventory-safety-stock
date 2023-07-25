@@ -4,21 +4,11 @@
 	<a href="/general" class="brand-link my-3 text-primary">
 		<img src="<?php echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
 				 style="opacity: .8">
-		<span class="brand-text font-weight-light">PT. RUBBERMAN</span>
+		<span class="brand-text font-weight-light">PT. XYJ</span>
 	</a>
 
 	<!-- Sidebar -->
 	<div class="sidebar">
-		<!-- Sidebar user panel (optional) -->
-		<!-- <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-			<div class="image">
-				<img src="<?php //echo base_url()?>assets/vendor/AdminLTE-3.0.0-alpha/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-			</div>
-			<div class="info">
-				<a href="#" class="d-block"><?php //echo $this->session->userdata('nama'); ?></a>
-			</div>
-		</div> -->
-
 		<!-- Sidebar Menu -->
 		<nav class="mt-2">
 			<ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -34,30 +24,10 @@
 					$array = [1, 3, 4];
 					if (in_array($this->session->userdata('role'), $array)) { ?>
 						<li class="nav-item">
-							<a href="<?php echo base_url('/general/listBarang') ?>" class="nav-link">
+							<a href="<?php echo base_url('/general/listBarangRetur') ?>" class="nav-link">
 								<i class="nav-icon fa fa-folder-open"></i>
 								<p>
-									Kelola Master Barang
-								</p>
-							</a>
-						</li>
-					<?php } ?>
-					<?php
-					$array = [1, 4];
-					if (in_array($this->session->userdata('role'), $array)) { ?>
-						<li class="nav-item">
-							<a href="<?php echo base_url('/general/listBarangMasuk') ?>" class="nav-link">
-								<i class="nav-icon fa fa-folder-open"></i>
-								<p>
-									Kelola Barang Masuk
-								</p>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="<?php echo base_url('/general/listBarangKeluar') ?>" class="nav-link">
-								<i class="nav-icon fa fa-folder-open"></i>
-								<p>
-									Kelola Barang Keluar
+									Kelola Barang Retur
 								</p>
 							</a>
 						</li>
@@ -86,14 +56,6 @@
 							</a>
 						</li>
 				<?php } ?>
-				<!-- <li class="nav-item">
-					<a href="<?php //echo base_url('/Auth/logout') ?>" class="nav-link">
-						<i class="nav-icon fa fa-sign-out"></i>
-						<p>
-							Logout
-						</p>
-					</a>
-				</li> -->
 			</ul>
 		</nav>
 		<!-- /.sidebar-menu -->

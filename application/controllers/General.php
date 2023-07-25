@@ -9,6 +9,7 @@ class General extends CI_Controller{
     $this->load->library('Pdf');
 
     $this->load->model('M_general');
+    $this->load->model('M_barang_return');
 
     $cekUserLogin = $this->session->userdata('status');
 
@@ -20,6 +21,12 @@ class General extends CI_Controller{
   function index()
   {
     $data['content'] = 'content/home';
+    $this->load->view('template', $data);
+  }
+
+  function listBarangRetur() {
+    $data['content'] = 'content/list_barang_return';
+    $data['barang'] = $this->M_general->getData('app_barang_retur');
     $this->load->view('template', $data);
   }
 
@@ -48,7 +55,7 @@ class General extends CI_Controller{
   function laporan()
   {
     $data['content'] = 'content/laporan';
-    $data['barang'] = $this->M_general->getLaporan('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $data['barang'] = $this->M_barang_return->getData('app_barang_retur');
     $this->load->view('template', $data);
   }
 
@@ -94,7 +101,7 @@ class General extends CI_Controller{
   function getDtl()
   {
     $request = $this->input->post('data');
-    $result = $this->M_general->getDataByID($request['table'], $request['idName'], $request['id']);
+    $result = $this->M_barang_return->getDataByID($request['table'], $request['idName'], $request['id']);
 
     echo json_encode($result);
   }
@@ -164,27 +171,19 @@ class General extends CI_Controller{
     $request = $this->input->post('data');
     $table = $this->input->post('table');
 
-    if (!empty($role)) {
-      if($role == 'users'){
-        echo "user";
-        $request = $this->generateData($request);
-      }
+    $check_item = $this->M_barang_return->checkReceiptNumber('app_barang_retur', 'receipt_number', $request['receipt_number']);
 
-      if ($role == 'master_barang') {
-        $cek_kode_barang = $this->M_general->checkKodeBarang('app_barang', 'kode_jenis_barang', $request['kode_jenis_barang']);
-
-        if($cek_kode_barang->num_rows() == 1){
-          $result = [
+    if($check_item->num_rows() == 1){
+        $result = [
             'status' => 'error',
-            'msg' => 'Kode Barang sudah ada!',
-          ];
-          echo json_encode($result);
-          exit;
-        }
-      }
+            'msg' => 'Nomor Resi sudah ada!',
+        ];
+
+        echo json_encode($result);
+        exit;
     }
 
-    $this->M_general->execute('save', $table, $request);
+    $this->M_barang_return->execute('save', $table, $request);
 
     $result = [
       'status' => 'success',
@@ -207,29 +206,28 @@ class General extends CI_Controller{
       'table' => $table,
       'id_name' => $id_name,
     ];
-    $this->M_general->execute('update', $id_name, $data);
+    $this->M_barang_return->execute('update', $id_name, $data);
   }
 
   function ActionDelete()
   {
     $request = $this->input->post('data');
     $table = $this->input->post('table');
-    $this->M_general->execute('delete', $table, $request);
+    $this->M_barang_return->execute('delete', $table, $request);
   }
 
   function cetakLaporan()
   {
-    $data = $this->M_general->getLaporan('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
+    $data = $this->M_general->getData('app_barang_retur');
 
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
     // document informasi
-    $pdf->SetCreator('Inventory Persidiaan Barang');
+    $pdf->SetCreator('Barang return');
     $pdf->SetTitle('Laporan');
     $pdf->SetSubject('Laporan');
 
     //header Data
-    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
     $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
 
 
@@ -257,17 +255,19 @@ class General extends CI_Controller{
 
     $html=
       '<div>
-        <h1 align="center">Laporan Barang</h1>
+        <h1 align="center">Laporan Barang Retur</h1>
 
         <table border="1" width="100" align="center">
           <tr>
             <th style="width:40px" align="center">No</th>
-            <th style="width:150px" align="center">Kode Jenis Barang</th>
-            <th style="width:150px" align="center">Nama Cabang</th>
-            <th style="width:150px" align="center">Tanggal Masuk</th>
-            <th style="width:150px" align="center">Tanggal Keluar</th>
-            <th style="width:200px" align="center">Jumlah Barang Keluar</th>
-            <th style="width:140px" align="center">Sisa Barang</th>
+            <th style="width:150px" align="center">Nama Barang</th>
+            <th style="width:100px" align="center">Kategori</th>
+            <th style="width:150px" align="center">Detail Retur</th>
+            <th style="width:150px" align="center">Nomor Resi</th>
+            <th style="width:70px" align="center">Nomor Ranjang</th>
+            <th style="width:100px" align="center">Tanggal Masuk</th>
+            <th style="width:100px" align="center">Tanggal Keluar</th>
+            <th style="width:100px" align="center">Status</th>
           </tr>';
 
           $no = 0;
@@ -275,19 +275,19 @@ class General extends CI_Controller{
             $no++;
             $html .= '<tr>
               <td>'.$no.'</td>
-              <td>'.$item->kode_jenis_barang.'</td>
-              <td>'.$item->nama_cabang.'</td>
-              <td>'.date('Y-m-d', strtotime($item->tanggal_masuk)).'</td>
-              <td>'.$item->tanggal_keluar.'</td>
-              <td>'.$item->jumlah_barang_keluar.'</td>
-              <td>'.$item->jumlah_barang.'</td>
+              <td>'.$item->item_name.'</td>
+              <td>'.$item->category.'</td>
+              <td>'.$item->reject_reason.'</td>
+              <td>'.$item->receipt_number.'</td>
+              <td>'.$item->bunk_number.'</td>
+              <td>'.date('Y-m-d', strtotime($item->created_at)).'</td>
+              <td>'.date('Y-m-d', strtotime($item->item_out_date)).'</td>
+              <td>'.$item->status.'</td>
             </tr>';
         }
 
         $html .='
             </table>
-            <h6>Mengetahui</h6><br>
-            <h6>Manager</h6>
           </div>';
 
     $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);

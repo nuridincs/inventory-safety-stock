@@ -1,6 +1,6 @@
 <?php
 
-class M_general extends CI_Model {
+class M_barang_return extends CI_Model {
 
   public function getData($table)
   {
@@ -29,7 +29,7 @@ class M_general extends CI_Model {
     return $query->result();
   }
 
-  public function checkKodeBarang($table, $idName, $id) {
+  public function checkReceiptNumber($table, $idName, $id) {
     $query = $this->db->select('*')
               ->from($table)
               ->where($idName, $id)
@@ -55,8 +55,6 @@ class M_general extends CI_Model {
             ->join($table2, $table2.'.'.$uniqid.'='.$table1.'.'.$uniqid, 'left')
             ->join('app_cabang', 'app_cabang.id='.$table1.'.id_cabang')
             ->get();
-
-    // echo $this->db->last_query();die;
 
     return $query->result();
   }

@@ -12,7 +12,7 @@
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0 text-dark">Laporan</h1>
-            <a href="cetakLaporan" class="btn btn-info btn-sm mt-3">Cetak Laporan</a>
+            <a href="cetakLaporan" target="_blank" class="btn btn-info btn-sm mt-3">Cetak Laporan</a>
           </div>
         </div>
       </div>
@@ -28,12 +28,14 @@
                 <thead>
                 <tr>
                   <th>Nomor</th>
-                  <th>Kode Jenis Barang</th>
-                  <th>Nama Cabang</th>
+                  <th>Nama Barang</th>
+                  <th>Kategori</th>
+                  <th>Detail Retur</th>
+                  <th>Nomor Resi</th>
+                  <th>Nomor Ranjang</th>
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
-                  <th>Jumlah Barang Keluar</th>
-                  <th>Sisa Barang</th>
+                  <th>Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -44,12 +46,14 @@
                 ?>
                 <tr>
                   <td><?= $no ?></td>
-                  <td><?= $data->kode_jenis_barang ?></td>
-                  <td><?= $data->nama_cabang ?></td>
-                  <td><?= date('Y-m-d', strtotime($data->tanggal_masuk)); ?></td>
-                  <td><?= $data->tanggal_keluar ?></td>
-                  <td><?= $data->jumlah_barang_keluar ?></td>
-                  <td><span class="badge badge-danger"><?= $data->jumlah_barang ?></span></td>
+                  <td><?= $data->item_name ?></td>
+                  <td><?= $data->category ?></td>
+                  <td><?= $data->reject_reason ?></td>
+                  <td><?= $data->receipt_number ?></td>
+                  <td><?= $data->bunk_number ?></td>
+                  <td><?= $data->created_at ?></td>
+                  <td><?= $data->item_out_date ?></td>
+                  <td><?= $data->status ?></td>
                 </tr>
                 <?php } ?>
               </table>
