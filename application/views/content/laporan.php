@@ -30,7 +30,7 @@
                   <th>Nomor</th>
                   <th>Nama Barang</th>
                   <th>Kategori</th>
-                  <th>Detail Retur</th>
+                  <th>Detail Return</th>
                   <th>Nomor Resi</th>
                   <th>Nomor Ranjang</th>
                   <th>Tanggal Masuk</th>

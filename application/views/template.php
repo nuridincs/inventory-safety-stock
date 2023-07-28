@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>PT. XYJ | Dashboard</title>
+	<title>Sistem Return Barang | Dashboard</title>
 	<!-- meta -->
 	<?php require_once 'template/_meta.php'; ?>
 

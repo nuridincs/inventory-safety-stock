@@ -21,6 +21,7 @@ class General extends CI_Controller{
   function index()
   {
     $data['content'] = 'content/home';
+    $data['barang'] = $this->M_general->getData('app_barang_retur');
     $this->load->view('template', $data);
   }
 
@@ -255,14 +256,14 @@ class General extends CI_Controller{
 
     $html=
       '<div>
-        <h1 align="center">Laporan Barang Retur</h1>
+        <h1 align="center">Laporan Barang Return</h1>
 
         <table border="1" width="100" align="center">
           <tr>
             <th style="width:40px" align="center">No</th>
             <th style="width:150px" align="center">Nama Barang</th>
             <th style="width:100px" align="center">Kategori</th>
-            <th style="width:150px" align="center">Detail Retur</th>
+            <th style="width:150px" align="center">Detail Return</th>
             <th style="width:150px" align="center">Nomor Resi</th>
             <th style="width:70px" align="center">Nomor Ranjang</th>
             <th style="width:100px" align="center">Tanggal Masuk</th>
