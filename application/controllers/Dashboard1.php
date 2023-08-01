@@ -6,12 +6,18 @@ class Dashboard1 extends CI_Controller{
   public function __construct()
   {
     parent::__construct();
-    //Codeigniter : Write Less Do More
+    $this->load->model('M_barang_return');
   }
 
-  function index()
+  // function index()
+  // {
+  //   $this->load->view('dashboard1');
+  // }
+
+  function getDetailById($id)
   {
-    $this->load->view('dashboard1');
+    $result = $this->M_barang_return->getDataByID('app_barang_retur', 'receipt_number', $id);
+    $this->load->view('detail_barang', $result);
   }
 
 }

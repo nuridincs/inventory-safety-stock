@@ -107,6 +107,16 @@ class General extends CI_Controller{
     echo json_encode($result);
   }
 
+  function getDetailById($id)
+  {
+    // print_r($id);
+// die('32');
+    $result = $this->M_barang_return->getDataByID('app_barang_retur', 'receipt_number', $id);
+    print_r($result);
+    // echo json_encode($result);
+    // return $result;
+  }
+
   function getDtlBarangMasuk()
   {
     $request = $this->input->post('data');
@@ -186,12 +196,33 @@ class General extends CI_Controller{
 
     $this->M_barang_return->execute('save', $table, $request);
 
+    $this->generateqrcode($request['receipt_number']);
+
     $result = [
       'status' => 'success',
       'msg' => 'Data Berhasil disimpan',
     ];
 
     echo json_encode($result);
+  }
+
+  public function generateqrcode($receipt_number){
+    $this->load->library('ciqrcode'); //meload library barcode
+    $this->load->helper('url'); //meload helper url untuk aktifkan base urlnya
+    $barcode_create=$receipt_number; // membuat code barcode yang nilainya 123456789
+    $params['data'] = base_url().'dashboard1/getDetailById/'.$barcode_create;
+    $params['level'] = 'H';
+    $params['size'] =5;
+    $params['savename'] = FCPATH . "assets/qrcode/".$barcode_create.".png";
+    $this->ciqrcode->generate($params);
+  }
+
+  public function cetak($type, $id){
+    if ($type == 'barcode') {
+      $_view = '<img src="'.base_url().'assets/qrcode/'.$id.'.png" class="img-responsive2">';
+    }
+
+    echo $_view;
   }
 
   function ActionUpdate()

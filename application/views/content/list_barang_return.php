@@ -34,6 +34,7 @@
                   <th>Nomor Ranjang</th>
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
+                  <th>Qr Code</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -53,6 +54,11 @@
                   <td><?= $data->bunk_number ?></td>
                   <td><?= $data->created_at ?></td>
                   <td><?= $data->item_out_date ?></td>
+                  <td>
+                    <img src="<?php echo base_url(); ?>assets/qrcode/<?php echo $data->receipt_number ?>.png" width="120" height="120" class="img-responsive2">
+                    <br>
+                    <a class="btn btn-sm label label-danger" href="#" onclick="window.open('<?= base_url('general/cetak/barcode/'.$data->receipt_number) ?>','POPUP WINDOW TITLE HERE','width=650,height=800').print()">Print Barcode</a>
+                  </td>
                   <td><?= $data->status ?></td>
                   <td>
                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalUpdate" onClick="getDtlBarang('<?= $data->id ?>')">Edit</button>
