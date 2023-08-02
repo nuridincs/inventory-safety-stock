@@ -68,6 +68,13 @@ class General extends CI_Controller{
     $this->load->view('template', $data);
   }
 
+  function listCustomer()
+  {
+    $data['content'] = 'content/list_customer';
+    $data['customers'] = $this->M_general->getData('app_customers');
+    $this->load->view('template', $data);
+  }
+
   function submitRequestBarang()
   {
     $request = $this->input->post('data');
@@ -197,6 +204,20 @@ class General extends CI_Controller{
     $this->M_barang_return->execute('save', $table, $request);
 
     $this->generateqrcode($request['receipt_number']);
+
+    $result = [
+      'status' => 'success',
+      'msg' => 'Data Berhasil disimpan',
+    ];
+
+    echo json_encode($result);
+  }
+
+  function processAddCustomer()
+  {
+    $request = $this->input->post('data');
+
+    $this->M_barang_return->execute('save', 'app_customers', $request);
 
     $result = [
       'status' => 'success',

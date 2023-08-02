@@ -27,19 +27,19 @@
 							<a href="<?php echo base_url('/general/listBarangRetur') ?>" class="nav-link">
 								<i class="nav-icon fa fa-folder-open"></i>
 								<p>
-									Kelola Barang Retur
+									Kelola Barang Return
 								</p>
 							</a>
 						</li>
 					<?php } ?>
 				<?php
-					$array = [3, 4];
+					$array = [1];
 					if (in_array($this->session->userdata('role'), $array)) { ?>
 						<li class="nav-item">
-							<a href="<?php echo base_url('/general/listUser') ?>" class="nav-link">
+							<a href="<?php echo base_url('/general/listCustomer') ?>" class="nav-link">
 								<i class="nav-icon fa fa-folder-open"></i>
 								<p>
-									Kelola Users
+									Kelola Customer
 								</p>
 							</a>
 						</li>
