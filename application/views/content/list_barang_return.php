@@ -34,6 +34,7 @@
                   <th>Nomor Ranjang</th>
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
+                  <th>Nama Penerima</th>
                   <th>Qr Code</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -54,6 +55,7 @@
                   <td><?= $data->bunk_number ?></td>
                   <td><?= $data->created_at ?></td>
                   <td><?= $data->item_out_date ?></td>
+                  <td><?= $data->nama ?></td>
                   <td>
                     <img src="<?php echo base_url(); ?>assets/qrcode/<?php echo $data->receipt_number ?>.png" width="120" height="120" class="img-responsive2">
                     <br>
@@ -102,16 +104,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="item_name">Detail Retur</label>
+                <label for="item_name">Detail Return</label>
                 <input type="text" class="form-control" name="reject_reason" id="reject_reason" placeholder="Masukan Detail Return">
-              </div>
-              <div class="form-group">
-                <label for="item_name">Nomor Resi</label>
-                <input type="text" class="form-control" name="receipt_number" id="receipt_number" placeholder="Masukan Nomor Resi">
-              </div>
-              <div class="form-group">
-                <label for="item_name">Nomor Ranjang</label>
-                <input type="text" class="form-control" name="bunk_number" id="bunk_number" placeholder="Masukan Nomor Ranjang">
               </div>
             </form>
           </div>
@@ -152,24 +146,24 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="item_name">Detail Retur</label>
+                <label for="item_name">Detail Return</label>
                 <input type="text" class="form-control" name="update_reject_reason" id="update_reject_reason" placeholder="Masukan Detail Return">
               </div>
               <div class="form-group">
-                <label for="item_name">Nomor Resi</label>
-                <input type="text" class="form-control" name="update_receipt_number" id="update_receipt_number" placeholder="Masukan Nomor Resi">
-              </div>
-              <div class="form-group">
-                <label for="item_name">Nomor Ranjang</label>
-                <input type="text" class="form-control" name="update_bunk_number" id="update_bunk_number" placeholder="Masukan Nomor Ranjang">
-              </div>
-              <div class="form-group">
                 <label for="status">Apakah barang ini sudah dikirim</label>
-                <select name="update_status" id="update_status" class="form-control">
+                <select name="update_status" id="update_status" class="form-control" onchange="toggleShowStaff()">
                   <option value="yes">Ya sudah dikirim</option>
                   <option value="no">Belum masih di gudang</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label for="status">Penerima Barang</label>
+                <select name="id_staff" class="form-control" id="id_staff">
+                    <?php foreach($staff as $staff) { ?>
+                      <option value="<?= $staff->id; ?>"><?= $staff->nama; ?></option>
+                    <?php } ?>
+                  </select>
+              </form>
             </form>
           </div>
 
@@ -219,7 +213,6 @@
       const category = $('#category').val();
       const reject_reason = $('#reject_reason').val();
       const receipt_number = $('#receipt_number').val();
-      const bunk_number = $('#bunk_number').val();
 
       if (item_name === '') {
         alert('Nama Barang Wajib diisi');
@@ -232,8 +225,6 @@
           item_name,
           category,
           reject_reason,
-          receipt_number,
-          bunk_number
         },
         table: 'app_barang_retur',
         role: 'admin',
@@ -255,30 +246,28 @@
       const item_name = $('#update_item_name').val();
       const category = $('#update_category').val();
       const reject_reason = $('#update_reject_reason').val();
-      const receipt_number = $('#update_receipt_number').val();
-      const bunk_number = $('#update_bunk_number').val();
       const updateStatus = $('#update_status').val();
+      const id_staff = $('#id_staff').val();
 
-      let item_out_date = null;
       let status = 'sedang di proses';
       const currentdate = new Date();
 
+      const data = {
+        item_name,
+        category,
+        reject_reason,
+        status,
+      };
+
       if (updateStatus === 'yes') {
         status = 'selesai';
-        item_out_date= new Date(currentdate.getTime() - (currentdate.getTimezoneOffset() * 60000)).toISOString().split(".")[0].replace(/[T:]/g, '-');
+        const item_out_date= new Date(currentdate.getTime() - (currentdate.getTimezoneOffset() * 60000)).toISOString().split(".")[0].replace(/[T:]/g, '-');
+        data.item_out_date = item_out_date;
+        data.id_staff = id_staff;
       }
 
-
       const formData = {
-        data: {
-          item_name,
-          category,
-          reject_reason,
-          receipt_number,
-          bunk_number,
-          status,
-          item_out_date
-        },
+        data,
         id: id,
         table: 'app_barang_retur',
         id_name: 'id',
@@ -344,7 +333,15 @@
       $('#update_category').val(result.category);
       $('#update_reject_reason').val(result.reject_reason);
       $('#update_receipt_number').val(result.receipt_number);
-      $('#update_bunk_number').val(result.bunk_number);
     });
+  }
+
+  function toggleShowStaff() {
+    var x = document.getElementById("id_staff");
+    if (x.style.display === "none") {
+      x.style.display = "block";
+    } else {
+      x.style.display = "none";
+    }
   }
 </script>
