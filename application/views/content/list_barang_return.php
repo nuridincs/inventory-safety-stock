@@ -156,7 +156,7 @@
                   <option value="no">Belum masih di gudang</option>
                 </select>
               </div>
-              <div class="form-group">
+              <div class="form-group" id="receipt_name">
                 <label for="status">Penerima Barang</label>
                 <select name="id_staff" class="form-control" id="id_staff">
                     <?php foreach($staff as $staff) { ?>
@@ -337,7 +337,7 @@
   }
 
   function toggleShowStaff() {
-    var x = document.getElementById("id_staff");
+    var x = document.getElementById("receipt_name");
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
