@@ -28,7 +28,7 @@ class General extends CI_Controller{
   function listBarangRetur() {
     $data['content'] = 'content/list_barang_return';
     $data['staff'] = $this->M_general->getData('app_staff');
-    $data['barang'] = $this->M_general->getJoinDataNew('id_staff', 'id', 'app_barang_retur', 'app_staff');
+    $data['barang'] = $this->M_general->getBarangReturn();
     // echo "<pre>";
     // print_r($data);
     // die;
@@ -122,7 +122,7 @@ class General extends CI_Controller{
   {
     $request = $this->input->post('data');
     $result = $this->M_barang_return->getDataByID($request['table'], $request['idName'], $request['id']);
-
+    // print_r($result);
     echo json_encode($result);
   }
 

@@ -97,8 +97,22 @@ class M_general extends CI_Model {
             ->from($table1)
             ->join($table2, $table2.'.'.$uniqidTbl2.'='.$table1.'.'.$uniqidTbl1, 'left')
             ->get();
+    // echo $this->db->last_query();die;
 
     return $query->result();
+  }
+
+  public function getBarangReturn() {
+    $query = "
+      SELECT
+          *, app_barang_retur.id as id
+        FROM
+          `app_barang_retur`
+        LEFT JOIN `app_staff` ON
+          `app_staff`.`id` = `app_barang_retur`.`id_staff`
+      ";
+
+    return $this->db->query($query)->result();
   }
 
   public function getDataInterval2Day() {
