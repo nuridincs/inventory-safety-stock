@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Customer</title>
+  <title>Data Karyawan</title>
 </head>
 <body>
   <div class="content-wrapper">
@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Data Customer</h1>
+            <h1 class="m-0 text-dark">Data Karyawan</h1>
           </div>
         </div>
       </div>
@@ -29,8 +29,8 @@
                   <th>Nomor</th>
                   <th>Nama</th>
                   <th>Nomor Telepon</th>
+                  <th>Email</th>
                   <th>Alamat</th>
-                  <th>Kode Pos</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -44,8 +44,8 @@
                   <td><?= $no ?></td>
                   <td><?= $data->nama ?></td>
                   <td><?= $data->nomor_telepon ?></td>
+                  <td><?= $data->email ?></td>
                   <td><?= $data->alamat ?></td>
-                  <td><?= $data->kode_pos ?></td>
                   <td>
                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalUpdate" onClick="getDtl('<?= $data->id ?>')">Edit</button>
                     |
@@ -84,12 +84,12 @@
               <input type="text" class="form-control" name="nomor_telepon" id="nomor_telepon" placeholder="Masukan Nomor Telepon" required>
             </div>
             <div class="form-group">
-              <label for="alamat">Alamat</label>
-              <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Masukan Alamat" required>
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Masukan Email" required>
             </div>
             <div class="form-group">
-              <label for="kode_pos">Kode Pos</label>
-              <input type="text" class="form-control" name="kode_pos" id="kode_pos" placeholder="Masukan Kode Pos" required>
+              <label for="alamat">Alamat</label>
+              <input type="text" class="form-control" name="alamat" id="alamat" placeholder="Masukan Alamat" required>
             </div>
           </div>
 
@@ -125,12 +125,12 @@
                 <input type="text" class="form-control" name="update_nomor_telepon" id="update_nomor_telepon" placeholder="Masukan Nomor Telepon" required>
               </div>
               <div class="form-group">
-                <label for="alamat">Alamat</label>
-                <input type="text" class="form-control" name="update_alamat" id="update_alamat" placeholder="Masukan Alamat" required>
+                <label for="update_email">Email</label>
+                <input type="email" class="form-control" name="update_email" id="update_email" placeholder="Masukan Email" required>
               </div>
               <div class="form-group">
-                <label for="kode_pos">Kode Pos</label>
-                <input type="text" class="form-control" name="update_kode_pos" id="update_kode_pos" placeholder="Masukan Kode Pos" required>
+                <label for="alamat">Alamat</label>
+                <input type="text" class="form-control" name="update_alamat" id="update_alamat" placeholder="Masukan Alamat" required>
               </div>
             </div>
 
@@ -179,7 +179,7 @@
       const nama = $('#nama').val();
       const nomor_telepon = $('#nomor_telepon').val();
       const alamat = $('#alamat').val();
-      const kode_pos = $('#kode_pos').val();
+      const email = $('#email').val();
 
       if (nama === '') {
         alert('Nama Wajib diisi');
@@ -198,9 +198,9 @@
           nama,
           nomor_telepon,
           alamat,
-          kode_pos,
+          email,
         },
-        tblName: 'app_customers'
+        tblName: 'app_staff'
       }
 
       $.post("processAddData", formData, function( data ) {
@@ -213,7 +213,7 @@
       const nama = $('#update_nama').val();
       const nomor_telepon = $('#update_nomor_telepon').val();
       const alamat = $('#update_alamat').val();
-      const kode_pos = $('#update_kode_pos').val();
+      const email = $('#update_email').val();
 
       if (nama === '') {
         alert('Nama Wajib diisi');
@@ -232,10 +232,10 @@
           nama,
           nomor_telepon,
           alamat,
-          kode_pos,
+          email,
         },
         id: id,
-        table: 'app_customers',
+        table: 'app_staff',
         id_name: 'id',
       }
 
@@ -252,7 +252,7 @@
           id: id,
           idName: 'id',
         },
-        table: 'app_customers',
+        table: 'app_staff',
       }
 
       $.post("ActionDelete", formData, function( data ) {
@@ -273,7 +273,7 @@
     const formData = {
       data: {
         id: id,
-        table: 'app_customers',
+        table: 'app_staff',
         idName: 'id',
       }
     }
@@ -283,7 +283,7 @@
       $('#update_nama').val(result.nama);
       $('#update_nomor_telepon').val(result.nomor_telepon);
       $('#update_alamat').val(result.alamat);
-      $('#update_kode_pos').val(result.kode_pos);
+      $('#update_email').val(result.email);
     });
   }
 </script>

@@ -29,6 +29,49 @@ class M_general extends CI_Model {
     return $query->result();
   }
 
+  public function getAvilabilityBunkNumber() {
+    $query = "
+        SELECT
+            bunk_number,
+            formatted_bunk_number,
+            totalBunkNumber,
+            availability
+        FROM (
+          SELECT
+            bunk_number,
+            CONCAT('Bunk-', bunk_number) AS formatted_bunk_number,
+            COUNT(bunk_number) AS totalBunkNumber,
+            CASE
+              WHEN COUNT(bunk_number) = 8 THEN 'not-available'
+              ELSE 'available'
+            END AS availability
+          FROM app_barang_retur
+          GROUP BY bunk_number
+        ) AS subquery
+        WHERE availability = 'available'
+        ORDER BY bunk_number ASC
+        LIMIT 1;
+      ";
+
+    return $this->db->query($query)->row();
+  }
+
+  public function getLastBunkNumber() {
+    $query = "
+        SELECT
+          bunk_number
+        FROM
+          app_barang_retur
+        GROUP BY
+          bunk_number
+        ORDER BY
+          bunk_number DESC
+        LIMIT 1;
+    ";
+
+    return $this->db->query($query)->row();
+  }
+
   public function checkKodeBarang($table, $idName, $id) {
     $query = $this->db->select('*')
               ->from($table)
@@ -46,6 +89,26 @@ class M_general extends CI_Model {
             ->get();
 
     return $query->result();
+  }
+
+  public function getJoinDataNew($uniqidTbl1, $uniqidTbl2, $table1, $table2)
+  {
+    $query = $this->db->select('*')
+            ->from($table1)
+            ->join($table2, $table2.'.'.$uniqidTbl2.'='.$table1.'.'.$uniqidTbl1, 'left')
+            ->get();
+
+    return $query->result();
+  }
+
+  public function getDataInterval2Day() {
+    $query = "
+      SELECT *
+      FROM app_barang_retur
+      WHERE created_at < DATE_SUB(CURDATE(), INTERVAL 2 DAY);
+    ";
+
+    return $this->db->query($query)->result();
   }
 
   public function getLaporan($uniqid, $table1, $table2)

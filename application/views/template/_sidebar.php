@@ -45,6 +45,18 @@
 						</li>
 				<?php } ?>
 				<?php
+					$array = [1];
+					if (in_array($this->session->userdata('role'), $array)) { ?>
+						<li class="nav-item">
+							<a href="<?php echo base_url('/general/listStaff') ?>" class="nav-link">
+								<i class="nav-icon fa fa-folder-open"></i>
+								<p>
+									Kelola Karyawan
+								</p>
+							</a>
+						</li>
+				<?php } ?>
+				<?php
 					$array = [1, 3, 4];
 					if (in_array($this->session->userdata('role'), $array)) { ?>
 						<li class="nav-item">

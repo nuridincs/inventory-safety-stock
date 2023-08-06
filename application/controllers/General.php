@@ -21,13 +21,18 @@ class General extends CI_Controller{
   function index()
   {
     $data['content'] = 'content/home';
-    $data['barang'] = $this->M_general->getData('app_barang_retur');
+    $data['barang'] = $this->M_general->getDataInterval2Day('');
     $this->load->view('template', $data);
   }
 
   function listBarangRetur() {
     $data['content'] = 'content/list_barang_return';
-    $data['barang'] = $this->M_general->getData('app_barang_retur');
+    $data['staff'] = $this->M_general->getData('app_staff');
+    $data['barang'] = $this->M_general->getJoinDataNew('id_staff', 'id', 'app_barang_retur', 'app_staff');
+    // echo "<pre>";
+    // print_r($data);
+    // die;
+    // echo "</pre>";
     $this->load->view('template', $data);
   }
 
@@ -72,6 +77,13 @@ class General extends CI_Controller{
   {
     $data['content'] = 'content/list_customer';
     $data['customers'] = $this->M_general->getData('app_customers');
+    $this->load->view('template', $data);
+  }
+
+  function listStaff()
+  {
+    $data['content'] = 'content/list_staff';
+    $data['customers'] = $this->M_general->getData('app_staff');
     $this->load->view('template', $data);
   }
 
@@ -189,16 +201,27 @@ class General extends CI_Controller{
     $request = $this->input->post('data');
     $table = $this->input->post('table');
 
-    $check_item = $this->M_barang_return->checkReceiptNumber('app_barang_retur', 'receipt_number', $request['receipt_number']);
+    // $check_item = $this->M_barang_return->checkReceiptNumber('app_barang_retur', 'receipt_number', $request['receipt_number']);
 
-    if($check_item->num_rows() == 1){
-        $result = [
-            'status' => 'error',
-            'msg' => 'Nomor Resi sudah ada!',
-        ];
+    // if($check_item->num_rows() == 1){
+    //     $result = [
+    //         'status' => 'error',
+    //         'msg' => 'Nomor Resi sudah ada!',
+    //     ];
 
-        echo json_encode($result);
-        exit;
+    //     echo json_encode($result);
+    //     exit;
+    // }
+
+    $receipt_number = 'RESI-' . rand(100000, 999999); //$this->generateReceiptNumber();
+    $getAvilabilityBunkNumber = $this->M_general->getAvilabilityBunkNumber();
+    $getLastBunkNumber = $this->M_general->getLastBunkNumber();
+    $request['receipt_number'] = $receipt_number;
+
+    if (!$getAvilabilityBunkNumber) {
+        $request['bunk_number'] = $getLastBunkNumber->bunk_number + 1;
+    } else {
+        $request['bunk_number'] = $getAvilabilityBunkNumber->bunk_number;
     }
 
     $this->M_barang_return->execute('save', $table, $request);
@@ -213,11 +236,46 @@ class General extends CI_Controller{
     echo json_encode($result);
   }
 
-  function processAddCustomer()
+  public function generateReceiptNumber()
+  {
+      // Get the current timestamp (UNIX timestamp)
+      $timestamp = time();
+
+      // Generate a random string
+      $random_string = $this->generateRandomString(6); // You can adjust the length of the string as needed
+
+      // Combine the timestamp and random string to create the receipt number
+      $receipt_number = $timestamp . $random_string;
+
+      return $receipt_number;
+  }
+
+  private function generateRandomString($length)
+  {
+      // Characters to use for the random string
+      $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+      // Get the number of characters in the string
+      $num_characters = strlen($characters);
+
+      // Initialize the random string
+      $random_string = '';
+
+      // Generate the random string
+      for ($i = 0; $i < $length; $i++) {
+          $random_string .= $characters[rand(0, $num_characters - 1)];
+      }
+
+      return $random_string;
+  }
+
+
+  function processAddData()
   {
     $request = $this->input->post('data');
+    $tblName = $this->input->post('tblName');
 
-    $this->M_barang_return->execute('save', 'app_customers', $request);
+    $this->M_barang_return->execute('save', $tblName, $request);
 
     $result = [
       'status' => 'success',
@@ -281,6 +339,7 @@ class General extends CI_Controller{
     $pdf->SetSubject('Laporan');
 
     //header Data
+    $pdf->SetHeaderData('logo_pos_indonesia.png',30,'','',array(203, 58, 44),array(0, 0, 0));
     $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
 
 
