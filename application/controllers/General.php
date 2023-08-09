@@ -43,33 +43,10 @@ class General extends CI_Controller{
     $this->load->view('template', $data);
   }
 
-  function listBarangMasuk()
-  {
-    $data['content'] = 'content/barang_masuk/list';
-    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang', 'app_barang_masuk');
-    $data['cabang'] = $this->M_general->getData('app_cabang');
-    $this->load->view('template', $data);
-  }
-
-  function listBarangKeluar()
-  {
-    $data['content'] = 'content/list_barang_keluar';
-    $data['barang'] = $this->M_general->getJoinData('kode_jenis_barang', 'app_barang_masuk', 'app_barang_keluar');
-    $this->load->view('template', $data);
-  }
-
   function laporan()
   {
     $data['content'] = 'content/laporan';
     $data['barang'] = $this->M_barang_return->getData('app_barang_retur');
-    $this->load->view('template', $data);
-  }
-
-  function listUser()
-  {
-    $data['content'] = 'content/list_user';
-    $data['user'] = $this->M_general->getJoinData('id_users_role', 'app_users', 'app_role');
-    $data['role'] = $this->M_general->getData('app_role');
     $this->load->view('template', $data);
   }
 
@@ -87,37 +64,6 @@ class General extends CI_Controller{
     $this->load->view('template', $data);
   }
 
-  function submitRequestBarang()
-  {
-    $request = $this->input->post('data');
-    $this->M_general->execute('save', 'app_barang_masuk', $request);
-  }
-
-  function unserializeForm($request) {
-    $get = explode('&', $request);
-
-    foreach ($get as $key => $value) {
-      $result[substr($value, 0 , strpos($value, '='))] =  substr(
-        $value,
-        strpos( $value, '=' ) + 1
-      );
-    }
-
-    return $result;
-  }
-
-  function VerifikasiBarang()
-  {
-    $request = $this->input->post('data');
-    $this->M_general->execute('update', 'verifikasi_barang', $request);
-  }
-
-  function SiapkanBarang()
-  {
-    $request = $this->input->post('data');
-    $this->M_general->execute('update', 'siapkan_barang', $request);
-  }
-
   function getDtl()
   {
     $request = $this->input->post('data');
@@ -128,12 +74,7 @@ class General extends CI_Controller{
 
   function getDetailById($id)
   {
-    // print_r($id);
-// die('32');
     $result = $this->M_barang_return->getDataByID('app_barang_retur', 'receipt_number', $id);
-    print_r($result);
-    // echo json_encode($result);
-    // return $result;
   }
 
   function getDtlBarangMasuk()
@@ -406,77 +347,4 @@ class General extends CI_Controller{
 
     $pdf->Output('report.pdf', 'I');
   }
-
-  function cetakInvoice($id)
-  {
-    $data = $this->M_general->getInvoiceData($id);
-    $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-    // document informasi
-    $pdf->SetCreator('Invoice');
-    $pdf->SetTitle('Invoice Barang Keluar');
-    $pdf->SetSubject('Barang Keluar');
-
-    //header Data
-    $pdf->SetHeaderData('rubberman-logo.jpg',30,'','',array(203, 58, 44),array(0, 0, 0));
-    $pdf->SetFooterData(array(255, 255, 255), array(255, 255, 255));
-
-
-    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
-    $pdf->setFooterFont(Array(PDF_FONT_NAME_MAIN,'',PDF_FONT_SIZE_MAIN));
-
-    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-    //set margin
-    $pdf->SetMargins(PDF_MARGIN_LEFT,PDF_MARGIN_TOP + 10,PDF_MARGIN_RIGHT);
-    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
-    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
-    $pdf->SetAutoPageBreak(FALSE, PDF_MARGIN_BOTTOM - 5);
-
-    //SET Scaling ImagickPixel
-    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-
-    //FONT Subsetting
-    $pdf->setFontSubsetting(true);
-
-    $pdf->SetFont('helvetica','',14,'',true);
-
-    $pdf->AddPage('L');
-
-    $html=
-      '<div>
-        <h1 align="center">Invoice Bukti Pengeluaran Barang</h1>
-
-        <table border="1">
-          <tr>
-            <th style="width:40px" align="center">No</th>
-            <th style="width:200px" align="center">Kode Jenis Barang</th>
-            <th style="width:200px" align="center">Tanggal Masuk</th>
-            <th style="width:200px" align="center">Tanggal Keluar</th>
-            <th style="width:250" align="center">Jumlah Barang Keluar</th>
-          </tr>';
-      $no = 0;
-      foreach($data as $item) {
-        $no++;
-        $html .= '<tr>
-          <td align="center">'.$no.'</td>
-          <td align="center">'.$item->kode_jenis_barang.'</td>
-          <td align="center">'.$item->tanggal_masuk.'</td>
-          <td align="center">'.$item->tanggal_keluar.'</td>
-          <td align="center">'.$item->jumlah_barang_keluar.'</td>
-        </tr>';
-      }
-
-      $html .='
-          </table>
-          <h6>Mengetahui</h6><br>
-          <h6>Manager</h6>
-        </div>';
-
-    $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 0, 0, true, '', true);
-
-    $pdf->Output('contoh_report.pdf', 'I');
-  }
-
 }

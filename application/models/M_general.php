@@ -18,17 +18,6 @@ class M_general extends CI_Model {
     return $query->result_array()[0];
   }
 
-  public function getInvoiceData($id)
-  {
-    $query = $this->db->select('*')
-            ->from('app_barang_masuk')
-            ->join('app_barang_keluar', 'app_barang_keluar.kode_jenis_barang=app_barang_masuk.kode_jenis_barang')
-            ->where('app_barang_masuk.kode_jenis_barang', $id)
-            ->get();
-
-    return $query->result();
-  }
-
   public function getAvilabilityBunkNumber() {
     $query = "
         SELECT
@@ -70,15 +59,6 @@ class M_general extends CI_Model {
     ";
 
     return $this->db->query($query)->row();
-  }
-
-  public function checkKodeBarang($table, $idName, $id) {
-    $query = $this->db->select('*')
-              ->from($table)
-              ->where($idName, $id)
-              ->get();
-
-    return $query;
   }
 
   public function getJoinData($uniqid, $table1, $table2)

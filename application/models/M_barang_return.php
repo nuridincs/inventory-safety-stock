@@ -18,17 +18,6 @@ class M_barang_return extends CI_Model {
     return $query->result_array()[0];
   }
 
-  public function getInvoiceData($id)
-  {
-    $query = $this->db->select('*')
-            ->from('app_barang_masuk')
-            ->join('app_barang_keluar', 'app_barang_keluar.kode_jenis_barang=app_barang_masuk.kode_jenis_barang')
-            ->where('app_barang_masuk.kode_jenis_barang', $id)
-            ->get();
-
-    return $query->result();
-  }
-
   public function checkReceiptNumber($table, $idName, $id) {
     $query = $this->db->select('*')
               ->from($table)
