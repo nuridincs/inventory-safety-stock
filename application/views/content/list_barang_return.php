@@ -65,7 +65,7 @@
                   <td>
                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalUpdate" onClick="getDtlBarang('<?= $data->id ?>')">Edit</button>
                     |
-                    <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modalDelete" onClick="getID('<?= $data->id ?>')">Delete</button>
+                    <button class="btn btn-danger btn-sm" onclick="confirmation('<?= $data->id ?>')">Delete</button>
                   </td>
                 </tr>
                 <?php } ?>
@@ -76,7 +76,7 @@
       </div>
     </section>
 
-    <input type="hidden" name="idselected" id="idselected" class=form-control"">
+    <input type="hidden" name="idselected" id="idselected" class="form-control">
 
     <!-- Modal Tambah Barang -->
     <div class="modal" id="modalTambah">
@@ -201,7 +201,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </body>
 </html>
@@ -256,7 +255,6 @@
         item_name,
         category,
         reject_reason,
-        status,
       };
 
       if (updateStatus === 'yes') {
@@ -265,6 +263,8 @@
         data.item_out_date = item_out_date;
         data.id_staff = id_staff;
       }
+
+      data.status = status;
 
       const formData = {
         data,
@@ -315,6 +315,11 @@
     $('#idselected').val(id);
   }
 
+  function getDtlBarang2(id)
+  {
+    $('#idselected').val(id);
+  }
+
   function getDtlBarang(id)
   {
     $('#idselected').val(id);
@@ -342,6 +347,23 @@
       x.style.display = "block";
     } else {
       x.style.display = "none";
+    }
+  }
+
+  function confirmation(id) {
+    var result = confirm("Apakah Anda yakin ingin menghapus data ini ?");
+    if (result) {
+      const formData = {
+        data: {
+          id: id,
+          idName: 'id',
+        },
+        table: 'app_barang_retur',
+      }
+
+      $.post("ActionDelete", formData, function( data ) {
+        window.location.reload();
+      });
     }
   }
 </script>
