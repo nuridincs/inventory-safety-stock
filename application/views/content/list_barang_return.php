@@ -35,6 +35,7 @@
                   <th>Tanggal Masuk</th>
                   <th>Tanggal Keluar</th>
                   <th>Nama Penerima</th>
+                  <th>Nama Customer</th>
                   <th>Qr Code</th>
                   <th>Status</th>
                   <th>Action</th>
@@ -55,7 +56,8 @@
                   <td><?= $data->bunk_number ?></td>
                   <td><?= $data->created_at ?></td>
                   <td><?= $data->item_out_date ?></td>
-                  <td><?= $data->nama ?></td>
+                  <td><?= $data->nama_staff ?></td>
+                  <td><?= $data->nama_customer ?></td>
                   <td>
                     <img src="<?php echo base_url(); ?>assets/qrcode/<?php echo $data->receipt_number ?>.png" width="120" height="120" class="img-responsive2">
                     <br>
@@ -104,8 +106,20 @@
                 </select>
               </div>
               <div class="form-group">
+                <label for="number_of_items">Jumlah Barang</label>
+                <input type="number" class="form-control" name="number_of_items" id="number_of_items" placeholder="Masukan Jumlah Barang">
+              </div>
+              <div class="form-group">
                 <label for="item_name">Detail Return</label>
                 <input type="text" class="form-control" name="reject_reason" id="reject_reason" placeholder="Masukan Detail Return">
+              </div>
+              <div class="form-group" id="customer_name">
+                <label for="customer_name">Nama Customer</label>
+                <select name="id_customer" class="form-control" id="id_customer">
+                    <?php foreach($customers as $customer) { ?>
+                      <option value="<?= $customer->id; ?>"><?= $customer->nama; ?></option>
+                    <?php } ?>
+                  </select>
               </div>
             </form>
           </div>
@@ -163,7 +177,19 @@
                       <option value="<?= $staff->id; ?>"><?= $staff->nama; ?></option>
                     <?php } ?>
                   </select>
-              </form>
+              </div>
+              <div class="form-group">
+                <label for="update_number_of_items">Jumlah Barang</label>
+                <input type="number" class="form-control" name="update_number_of_items" id="update_number_of_items" placeholder="Masukan Jumlah Barang">
+              </div>
+              <div class="form-group" id="customer_name">
+                <label for="customer_name">Nama Customer</label>
+                <select name="update_id_customer" class="form-control" id="update_id_customer">
+                    <?php foreach($customers as $customer) { ?>
+                      <option value="<?= $customer->id; ?>"><?= $customer->nama; ?></option>
+                    <?php } ?>
+                  </select>
+              </div>
             </form>
           </div>
 
@@ -212,6 +238,8 @@
       const category = $('#category').val();
       const reject_reason = $('#reject_reason').val();
       const receipt_number = $('#receipt_number').val();
+      const number_of_items = $('#number_of_items').val();
+      const id_customer = $('#id_customer').val();
 
       if (item_name === '') {
         alert('Nama Barang Wajib diisi');
@@ -224,6 +252,8 @@
           item_name,
           category,
           reject_reason,
+          number_of_items,
+          id_customer
         },
         table: 'app_barang_retur',
         role: 'admin',
@@ -232,7 +262,7 @@
       $.post("ActionAdd", formData, function( data ) {
         const result = JSON.parse(data);
 
-        if(result.status == 'error') {
+        if (result.status == 'error') {
           alert(result.msg);
         } else {
           window.location.reload();
@@ -247,6 +277,9 @@
       const reject_reason = $('#update_reject_reason').val();
       const updateStatus = $('#update_status').val();
       const id_staff = $('#id_staff').val();
+      const number_of_items = $('#update_number_of_items').val();
+      const id_customer = $('#update_id_customer').val();
+
 
       let status = 'sedang di proses';
       const currentdate = new Date();
@@ -255,6 +288,8 @@
         item_name,
         category,
         reject_reason,
+        number_of_items,
+        id_customer
       };
 
       if (updateStatus === 'yes') {
@@ -338,6 +373,7 @@
       $('#update_category').val(result.category);
       $('#update_reject_reason').val(result.reject_reason);
       $('#update_receipt_number').val(result.receipt_number);
+      $('#update_number_of_items').val(result.number_of_items);
     });
   }
 

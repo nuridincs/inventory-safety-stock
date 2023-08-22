@@ -1,7 +1,7 @@
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
-      <h1 class="m-0 text-dark mb-5">Selamat datang <strong><?php echo $this->session->userdata('nama'); ?></strong></h1>
+      <h1 class="m-0 text-dark mb-5">Selamat datang <strong><?php echo $this->session->userdata('nama'); ?></strong> di kantor POS BEKASI</h1>
       <h3 class="m-0 text-dark mb-5">Data yg perlu dikirim sudah melewati batas waktu 2 hari</h3>
       <section class="content">
         <div class="row">

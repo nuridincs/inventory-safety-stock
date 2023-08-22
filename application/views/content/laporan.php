@@ -10,9 +10,26 @@
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-2">
             <h1 class="m-0 text-dark">Laporan</h1>
-            <a href="cetakLaporan" target="_blank" class="btn btn-info btn-sm mt-3">Cetak Laporan</a>
+            <a href="<?= base_url('general/cetakLaporan') ?>" target="_blank" class="btn btn-info btn-sm mt-3">Cetak Laporan</a>
+          </div>
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark mb-2">Filter</h1>
+            <form action="<?= base_url('general/laporan'); ?>" method="post">
+              <div class="row">
+                <div class="col-sm-6">
+                  <select class="form-control" name="selectedFilter">
+                    <option value="all">Semua</option>
+                    <option value="today" selected>Hari ini</option>
+                    <option value="current_month">Bulan ini</option>
+                  </select>
+                </div>
+                <div class="col-sm-6">
+                  <input type="submit" class="btn btn-primary" value="Search"></input>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -29,7 +46,9 @@
                 <tr>
                   <th>Nomor</th>
                   <th>Nama Barang</th>
+                  <th>Nama Customer</th>
                   <th>Kategori</th>
+                  <th>Jumlah</th>
                   <th>Detail Return</th>
                   <th>Nomor Resi</th>
                   <th>Nomor Ranjang</th>
@@ -47,7 +66,9 @@
                 <tr>
                   <td><?= $no ?></td>
                   <td><?= $data->item_name ?></td>
+                  <td><?= $data->nama_customer ?></td>
                   <td><?= $data->category ?></td>
+                  <td><?= $data->number_of_items ?></td>
                   <td><?= $data->reject_reason ?></td>
                   <td><?= $data->receipt_number ?></td>
                   <td><?= $data->bunk_number ?></td>

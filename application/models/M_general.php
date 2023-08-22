@@ -102,15 +102,25 @@ class M_general extends CI_Model {
     return $query->result();
   }
 
-  public function getBarangReturn() {
+  public function getBarangReturn($selectedFilter = null) {
     $query = "
       SELECT
-          *, app_barang_retur.id as id
+          *, app_barang_retur.id as id, app_customers.nama as nama_customer, app_customers.id as id_customer, app_staff.nama as nama_staff, app_staff.id as id_staff
         FROM
           `app_barang_retur`
         LEFT JOIN `app_staff` ON
           `app_staff`.`id` = `app_barang_retur`.`id_staff`
+        LEFT JOIN `app_customers` ON
+          `app_customers`.`id` = `app_barang_retur`.`id_customer`
       ";
+
+      if (isset($selectedFilter)) {
+        if ($selectedFilter == 'today') {
+          $query .= " WHERE DATE(app_barang_retur.created_at) = CURDATE()";
+        } elseif ($selectedFilter == 'current_month') {
+          $query .= " WHERE MONTH(app_barang_retur.created_at) = MONTH(CURDATE()) AND YEAR(app_barang_retur.created_at) = YEAR(CURDATE())";
+        }
+      }
 
     return $this->db->query($query)->result();
   }

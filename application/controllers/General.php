@@ -28,9 +28,10 @@ class General extends CI_Controller{
   function listBarangRetur() {
     $data['content'] = 'content/list_barang_return';
     $data['staff'] = $this->M_general->getData('app_staff');
+    $data['customers'] = $this->M_general->getData('app_customers');
     $data['barang'] = $this->M_general->getBarangReturn();
     // echo "<pre>";
-    // print_r($data);
+    // print_r($request);
     // die;
     // echo "</pre>";
     $this->load->view('template', $data);
@@ -61,7 +62,31 @@ class General extends CI_Controller{
   function laporan()
   {
     $data['content'] = 'content/laporan';
+    $selectedFilter = $this->input->post('selectedFilter');
+    $data['staff'] = $this->M_general->getData('app_staff');
+    $data['customers'] = $this->M_general->getData('app_customers');
+    $data['barang'] = $this->M_general->getBarangReturn('today');
+
+    if (isset($selectedFilter)) {
+      $data['barang'] = $this->M_general->getBarangReturn($selectedFilter);
+    }
+    // echo "<pre>";
+    // print_r($request);
+    // die;
+    // echo "</pre>";
+    $this->load->view('template', $data);
+  }
+
+  function filterLaporan()
+  {
+    $data['content'] = 'content/laporan';
+    $request = $this->input->post();
+    echo "<pre>";
+    print_r($request);
+    die('filterLaporan');
+    // echo "</pre>";
     $data['barang'] = $this->M_barang_return->getData('app_barang_retur');
+
     $this->load->view('template', $data);
   }
 
@@ -329,7 +354,7 @@ class General extends CI_Controller{
 
   function cetakLaporan()
   {
-    $data = $this->M_general->getData('app_barang_retur');
+    $data = $this->M_general->getBarangReturn();
 
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -372,10 +397,12 @@ class General extends CI_Controller{
         <table border="1" width="100" align="center">
           <tr>
             <th style="width:40px" align="center">No</th>
-            <th style="width:150px" align="center">Nama Barang</th>
+            <th style="width:100px" align="center">Nama Barang</th>
+            <th style="width:100px" align="center">Nama Customer</th>
             <th style="width:100px" align="center">Kategori</th>
-            <th style="width:150px" align="center">Detail Return</th>
-            <th style="width:150px" align="center">Nomor Resi</th>
+            <th style="width:50px" align="center">Jumlah</th>
+            <th style="width:100px" align="center">Detail Return</th>
+            <th style="width:120px" align="center">Nomor Resi</th>
             <th style="width:70px" align="center">Nomor Ranjang</th>
             <th style="width:100px" align="center">Tanggal Masuk</th>
             <th style="width:100px" align="center">Tanggal Keluar</th>
@@ -388,7 +415,9 @@ class General extends CI_Controller{
             $html .= '<tr>
               <td>'.$no.'</td>
               <td>'.$item->item_name.'</td>
+              <td>'.$item->nama_customer.'</td>
               <td>'.$item->category.'</td>
+              <td>'.$item->number_of_items.'</td>
               <td>'.$item->reject_reason.'</td>
               <td>'.$item->receipt_number.'</td>
               <td>'.$item->bunk_number.'</td>
